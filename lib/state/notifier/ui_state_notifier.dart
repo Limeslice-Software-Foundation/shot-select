@@ -12,25 +12,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'injection.dart';
-import 'shot_select_app.dart';
+import '../ui_state.dart';
 
-void main() {
-  configureDependencies();
-  runZonedGuarded(
-        () => runApp(
-      const ProviderScope(
-        child: ShotSelectApp(),
-      ),
-    ),
-        (error, stackTrace) {
-      print(error);
-      print(stackTrace);
-    },
-  );
+class UIStateNotifier extends StateNotifier<UIState> {
+  UIStateNotifier() : super(const UIState());
+
 }

@@ -12,25 +12,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'injection.dart';
-import 'shot_select_app.dart';
+import 'ui/main_window.dart';
 
-void main() {
-  configureDependencies();
-  runZonedGuarded(
-        () => runApp(
-      const ProviderScope(
-        child: ShotSelectApp(),
+class ShotSelectApp extends StatelessWidget {
+  const ShotSelectApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Shot Select',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green, brightness: Brightness.dark),
+        useMaterial3: true,
+        fontFamily: 'Poppins',
       ),
-    ),
-        (error, stackTrace) {
-      print(error);
-      print(stackTrace);
-    },
-  );
+      home: const MainWindow(),
+    );
+  }
 }
