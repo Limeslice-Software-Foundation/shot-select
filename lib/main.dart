@@ -18,10 +18,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'injection.dart';
+import 'service/lib_raw_service.dart';
 import 'shot_select_app.dart';
 
-void main() {
+void main() async {
   configureDependencies();
+  LibRawService service = getIt<LibRawService>();
+  bool libLoaded = await service.loadLibRaw();
   runZonedGuarded(
         () => runApp(
       const ProviderScope(
