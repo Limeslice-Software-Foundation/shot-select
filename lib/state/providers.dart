@@ -15,8 +15,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'notifier/raw_file_state_notifier.dart';
+import 'notifier/ui_state_notifier.dart';
 import 'raw_file_state.dart';
+import 'ui_state.dart';
 
-final dataStateProvider = StateNotifierProvider<RawFileStateNotifier, RawFileState>((ref) {
+final rawFileStateProvider = StateNotifierProvider<RawFileStateNotifier, RawFileState>((ref) {
   return RawFileStateNotifier();
+});
+
+final uiStateProvider = StateNotifierProvider<UIStateNotifier, UIState>((ref) {
+  return UIStateNotifier();
 });

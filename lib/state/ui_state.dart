@@ -1,3 +1,5 @@
+
+
 // Licensed to the Limeslice Software Foundation (LSF) under one or more
 // contributor license agreements.  See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
@@ -12,25 +14,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'dart:async';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+part 'ui_state.freezed.dart';
 
-import 'injection.dart';
-import 'shot_select_app.dart';
+@Freezed()
+class UIState with _$UIState {
+  const factory UIState({
+    @Default(0) int current,
+    @Default(0) int totalFiles,
 
-void main() {
-  configureDependencies();
-  runZonedGuarded(
-        () => runApp(
-      const ProviderScope(
-        child: ShotSelectApp(),
-      ),
-    ),
-        (error, stackTrace) {
-      print(error);
-      print(stackTrace);
-    },
-  );
+  }) = _UIState;
 }

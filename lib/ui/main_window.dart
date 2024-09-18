@@ -12,25 +12,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'injection.dart';
-import 'shot_select_app.dart';
+import 'widgets/toolbar.dart';
 
-void main() {
-  configureDependencies();
-  runZonedGuarded(
-        () => runApp(
-      const ProviderScope(
-        child: ShotSelectApp(),
-      ),
-    ),
-        (error, stackTrace) {
-      print(error);
-      print(stackTrace);
-    },
-  );
+
+class MainWindow extends StatefulWidget {
+  const MainWindow({super.key});
+
+  @override
+  State<MainWindow> createState() => _MainWindowState();
+}
+
+class _MainWindowState extends State<MainWindow> {
+  bool lightTableView = true;
+
+  onViewChanged(bool newSelection) {
+    setState(() {
+      lightTableView = newSelection;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(child: Column(
+        children: [
+          Toolbar(lightTableView: lightTableView, onViewChanged: onViewChanged,),
+          Expanded(child: Container(),),
+
+        ],
+      ),),
+    );
+  }
 }
