@@ -287,10 +287,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_libraw
-      sha256: "081725a6487378124f0fb3eb683b335b1e3e132f93f9fefd13c2cfc8fd8d1c8b"
+      sha256: "97df5812e3533abebbd33bdea6cebc5917cc1c1971682f82c016d4452a92d6f6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1"
+    version: "0.0.2"
   flutter_lints:
     dependency: "direct dev"
     description:

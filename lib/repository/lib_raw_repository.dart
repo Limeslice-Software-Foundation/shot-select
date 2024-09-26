@@ -25,17 +25,17 @@ const String _libName = 'libraw';
 @lazySingleton
 class LibRawRepository {
 
-  late FlutterLibRawBindings _bindings;
-
-  Future<bool> loadLibRaw() async {
+  Future<bool> loadLibRawLib() async {
+    String libraryName = determineLibraryName();
+    File libFile = await _extractLibFile(libraryName);
     try {
-      String libraryName = determineLibraryName();
-      File file = await _extractLibFile(libraryName);
-      _bindings = FlutterLibRawBindings(DynamicLibrary.open(file.path));
-      return true;
-    } catch (err) {
-      return false;
+      flutterLibRawBindings =
+          FlutterLibRawBindings(DynamicLibrary.open(libFile.path));
+    } catch (err, strace) {
+      print(err);
+      print(strace);
     }
+    return true;
   }
 
   String determineLibraryName() {

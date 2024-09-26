@@ -23,6 +23,6 @@ class LibRawService {
 
   Future<bool> loadLibRaw() async {
     LibRawRepository repository = getIt<LibRawRepository>();
-    return await repository.loadLibRaw();
+    return await repository.loadLibRawLib();
   }
 }

@@ -20,6 +20,7 @@ part 'raw_file_state.freezed.dart';
 @Freezed()
 class RawFileState with _$RawFileState {
   const factory RawFileState({
+    required String directory,
     required List<RawFile> files,
     @Default(false) bool isLoading,
     @Default(false) bool isError,

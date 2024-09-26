@@ -22,18 +22,22 @@ import 'service/lib_raw_service.dart';
 import 'shot_select_app.dart';
 
 void main() async {
-  configureDependencies();
-  LibRawService service = getIt<LibRawService>();
-  bool libLoaded = await service.loadLibRaw();
-  runZonedGuarded(
-        () => runApp(
+
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    configureDependencies();
+
+    LibRawService service = getIt<LibRawService>();
+    bool libLoaded = await service.loadLibRaw();
+
+    runApp(
       const ProviderScope(
         child: ShotSelectApp(),
       ),
-    ),
-        (error, stackTrace) {
-      print(error);
-      print(stackTrace);
-    },
-  );
+    );
+
+  }, (exception, stackTrace) async {
+   print(exception);
+   print(stackTrace);
+  });
 }
