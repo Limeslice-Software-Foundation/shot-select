@@ -12,25 +12,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Toolbar extends StatelessWidget {
+import '../../state/providers.dart';
+
+class Toolbar extends ConsumerWidget {
   bool lightTableView;
   Function onViewChanged;
   Toolbar({super.key, required this.lightTableView, required this.onViewChanged});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Row(
         children: [
-          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.folderOpen)),
+          IconButton(onPressed: () async {
+            String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+            if (selectedDirectory != null) {
+              ref.read(rawFileStateProvider.notifier).loadFiles(selectedDirectory);
+            }
+          }, icon: const FaIcon(FontAwesomeIcons.folderOpen)),
           const SizedBox(width: 10,),
           IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.clone)),
           const SizedBox(width: 10,),
-          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.fileExport)),
+          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.trash)),
           Expanded(child: Container(),),
           SegmentedButton<bool>(segments: const [
              ButtonSegment<bool>(

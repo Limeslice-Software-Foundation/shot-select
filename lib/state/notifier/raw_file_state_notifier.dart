@@ -20,15 +20,17 @@ import '../../service/raw_file_service.dart';
 import '../raw_file_state.dart';
 
 class RawFileStateNotifier extends StateNotifier<RawFileState> {
-  RawFileStateNotifier() : super(const RawFileState(files: []));
+  RawFileStateNotifier() : super(const RawFileState(directory: '', files: []));
 
   Future<void> loadFiles(String directory) async {
     state = state.copyWith(files: [], isError: false, isLoading: true);
 
     try {
       RawFileService service = getIt<RawFileService>();
+      print('### TCM ### Going to load files: $directory');
       List<RawFile> files = await service.loadFiles(directory);
-      state = state.copyWith(files: files);
+      print('### TCM ### opened ${files.length} raw files');
+      state = state.copyWith(files: files, directory: directory);
     } catch (err) {
       state = state.copyWith(isError: true);
     }
