@@ -24,5 +24,26 @@ class UIState with _$UIState {
     @Default(0) int current,
     @Default(0) int totalFiles,
 
+    @Default(true) bool showGridView,
+
+    @Default(false) bool filterNoRating,
+    @Default(false) bool filterOneStar,
+    @Default(false) bool filterTwoStar,
+    @Default(false) bool filterThreeStar,
+    @Default(false) bool filterFourStar,
+    @Default(false) bool filterFiveStar,
+
+    @Default(false) bool filterNoColor,
+    @Default(false) bool filterRedColor,
+    @Default(false) bool filterYellowColor,
+    @Default(false) bool filterGreenColor,
+    @Default(false) bool filterBlueColor,
+    @Default(false) bool filterPurpleColor,
+
+    @Default(false) bool filterRejected,
+    @Default(false) bool filterTagged,
+    @Default(false) bool filterUntagged,
+
+
   }) = _UIState;
 }

@@ -13,40 +13,235 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shot_select/state/ui_state.dart';
 
-class Toolbar extends StatelessWidget {
-  bool lightTableView;
-  Function onViewChanged;
-  Toolbar({super.key, required this.lightTableView, required this.onViewChanged});
+import '../../state/providers.dart';
+import 'fa_button.dart';
+
+class Toolbar extends ConsumerWidget {
+  const Toolbar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Row(
-        children: [
-          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.folderOpen)),
-          const SizedBox(width: 10,),
-          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.clone)),
-          const SizedBox(width: 10,),
-          IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.fileExport)),
-          Expanded(child: Container(),),
-          SegmentedButton<bool>(segments: const [
-             ButtonSegment<bool>(
-                value: true,
-                label: Text('Light Table'),
-                icon: Icon(Icons.grid_view_rounded)),
-            ButtonSegment<bool>(
-                value: false,
-                label: Text('Loupe'),
-                icon: Icon(Icons.image_rounded)),
-          ], selected: <bool>{lightTableView},
-          onSelectionChanged: (Set<bool> newSelection) {
-            onViewChanged(newSelection.first);
-          },),
-        ],
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    UIState uiState = ref.watch(uiStateProvider);
+    return Row(
+      children: [
+        IconButton(
+          tooltip: 'Open Folder',
+          onPressed: () {},
+          icon: const Icon(
+            Icons.folder,
+            size: 17,
+          ),
+        ),
+        IconButton(
+          tooltip: 'Copy Images',
+          onPressed: () {},
+          icon: const Icon(
+            Icons.file_copy,
+            size: 17,
+          ),
+        ),
+        IconButton(
+          tooltip: 'Move Images',
+          onPressed: () {},
+          icon: const Icon(
+            Icons.drive_file_move,
+            size: 17,
+          ),
+        ),
+        IconButton(
+          tooltip: 'Delete Images',
+          onPressed: () {},
+          icon: const Icon(
+            Icons.delete,
+            size: 17,
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).noRating();
+                  },
+                  isSelected: uiState.filterNoRating,
+                  iconData: FontAwesomeIcons.star,
+                  selectedIcon: FontAwesomeIcons.solidStar,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).oneStar();
+                  },
+                  isSelected: uiState.filterOneStar,
+                  iconData: FontAwesomeIcons.star,
+                  selectedIcon: FontAwesomeIcons.solidStar,
+                  label: '1',
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).twoStar();
+                  },
+                  isSelected: uiState.filterTwoStar,
+                  iconData: FontAwesomeIcons.star,
+                  selectedIcon: FontAwesomeIcons.solidStar,
+                  label: '2',
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).threeStar();
+                  },
+                  isSelected: uiState.filterThreeStar,
+                  iconData: FontAwesomeIcons.star,
+                  selectedIcon: FontAwesomeIcons.solidStar,
+                  label: '3',
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).fourStar();
+                  },
+                  isSelected: uiState.filterFourStar,
+                  iconData: FontAwesomeIcons.star,
+                  selectedIcon: FontAwesomeIcons.solidStar,
+                  label: '4',
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).fiveStar();
+                  },
+                  isSelected: uiState.filterFiveStar,
+                  iconData: FontAwesomeIcons.star,
+                  selectedIcon: FontAwesomeIcons.solidStar,
+                  label: '5',
+                ),
+                const SizedBox(
+                  height: 20,
+                  child: VerticalDivider(
+                    thickness: 1,
+                  ),
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterNoColor();
+                  },
+                  isSelected: uiState.filterNoColor,
+                  iconData: FontAwesomeIcons.circle,
+                  selectedIcon: FontAwesomeIcons.solidCircle,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterRedColor();
+                  },
+                  isSelected: uiState.filterRedColor,
+                  iconData: FontAwesomeIcons.circle,
+                  selectedIcon: FontAwesomeIcons.solidCircle,
+                  color: Colors.red,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterYellowColor();
+                  },
+                  isSelected: uiState.filterYellowColor,
+                  iconData: FontAwesomeIcons.circle,
+                  selectedIcon: FontAwesomeIcons.solidCircle,
+                  color: Colors.yellow,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterGreenColor();
+                  },
+                  isSelected: uiState.filterGreenColor,
+                  iconData: FontAwesomeIcons.circle,
+                  selectedIcon: FontAwesomeIcons.solidCircle,
+                  color: Colors.green,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterBlueColor();
+                  },
+                  isSelected: uiState.filterBlueColor,
+                  iconData: FontAwesomeIcons.circle,
+                  selectedIcon: FontAwesomeIcons.solidCircle,
+                  color: Colors.blue,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterPurpleColor();
+                  },
+                  isSelected: uiState.filterPurpleColor,
+                  iconData: FontAwesomeIcons.circle,
+                  selectedIcon: FontAwesomeIcons.solidCircle,
+                  color: Colors.purple,
+                ),
+                const SizedBox(
+                  height: 20,
+                  child: VerticalDivider(
+                    thickness: 1,
+                  ),
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterUntagged();
+                  },
+                  isSelected: uiState.filterUntagged,
+                  iconData: FontAwesomeIcons.square,
+                  highlightColor: Colors.blue,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterTagged();
+                  },
+                  isSelected: uiState.filterTagged,
+                  iconData: FontAwesomeIcons.squareCheck,
+                  highlightColor: Colors.green,
+                ),
+                FaButton(
+                  onPressed: () {
+                    ref.read(uiStateProvider.notifier).filterRejected();
+                  },
+                  isSelected: uiState.filterRejected,
+                  iconData: FontAwesomeIcons.squareXmark,
+                  highlightColor: Colors.red,
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        IconButton(
+          tooltip: 'Contact Sheet View',
+          onPressed: () {
+            ref.read(uiStateProvider.notifier).showGridView(true);
+          },
+          isSelected: uiState.showGridView,
+          icon: const Icon(Icons.grid_view_rounded, size: 15),
+        ),
+        IconButton(
+          tooltip: 'Loupe View',
+          onPressed: () {
+            ref.read(uiStateProvider.notifier).showGridView(false);
+          },
+          isSelected: !uiState.showGridView,
+          icon: const Icon(Icons.image_rounded, size: 15),
+        ),
+
+
+        const SizedBox(
+          height: 20,
+          child: VerticalDivider(
+            thickness: 1,
+          ),
+        ),
+        IconButton(
+          tooltip: 'Settings',
+          onPressed: () {},
+          icon: const Icon(Icons.settings, size: 15),
+        ),
+      ],
     );
   }
 }
