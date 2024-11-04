@@ -25,20 +25,13 @@ class MainWindow extends StatefulWidget {
 }
 
 class _MainWindowState extends State<MainWindow> {
-  bool lightTableView = true;
-
-  onViewChanged(bool newSelection) {
-    setState(() {
-      lightTableView = newSelection;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(child: Column(
         children: [
-          Toolbar(lightTableView: lightTableView, onViewChanged: onViewChanged,),
+          const Toolbar(),
           Expanded(child: Container(),),
 
         ],

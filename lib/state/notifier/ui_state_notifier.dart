@@ -19,4 +19,67 @@ import '../ui_state.dart';
 class UIStateNotifier extends StateNotifier<UIState> {
   UIStateNotifier() : super(const UIState());
 
+  void noRating() {
+    state = state.copyWith(filterNoRating: !state.filterNoRating);
+  }
+
+  void oneStar() {
+    state = state.copyWith(filterOneStar: !state.filterOneStar);
+  }
+
+  void twoStar() {
+    state = state.copyWith(filterTwoStar: !state.filterTwoStar);
+  }
+
+  void threeStar() {
+    state = state.copyWith(filterThreeStar: !state.filterThreeStar);
+  }
+
+  void fourStar() {
+    state = state.copyWith(filterFourStar: !state.filterFourStar);
+  }
+
+  void fiveStar() {
+    state = state.copyWith(filterFiveStar: !state.filterFiveStar);
+  }
+
+  void filterUntagged() {
+    state = state.copyWith(filterUntagged: !state.filterUntagged);
+  }
+
+  void filterRejected() {
+    state = state.copyWith(filterRejected: !state.filterRejected);
+  }
+
+  void filterTagged() {
+    state = state.copyWith(filterTagged: !state.filterTagged);
+  }
+
+  void filterNoColor() {
+    state = state.copyWith(filterNoColor: !state.filterNoColor);
+  }
+
+  void filterRedColor() {
+    state = state.copyWith(filterRedColor: !state.filterRedColor);
+  }
+
+  void filterYellowColor() {
+    state = state.copyWith(filterYellowColor: !state.filterYellowColor);
+  }
+
+  void filterGreenColor() {
+    state = state.copyWith(filterGreenColor: !state.filterGreenColor);
+  }
+
+  void filterBlueColor() {
+    state = state.copyWith(filterBlueColor: !state.filterBlueColor);
+  }
+
+  void filterPurpleColor() {
+    state = state.copyWith(filterPurpleColor: !state.filterPurpleColor);
+  }
+
+  void showGridView(bool showGridView) {
+    state = state.copyWith(showGridView: showGridView);
+  }
 }
