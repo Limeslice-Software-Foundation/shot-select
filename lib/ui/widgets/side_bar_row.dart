@@ -14,36 +14,21 @@
 // limitations under the License.
 import 'package:flutter/material.dart';
 
-import 'widgets/side_bar.dart';
-import 'widgets/toolbar.dart';
+const TextStyle fieldNameStyle =  TextStyle(fontSize: 9);
+const TextStyle fieldValueStyle = TextStyle(fontSize: 11);
+const double firstColumnWidth = 55;
 
-class MainWindow extends StatefulWidget {
-  const MainWindow({super.key});
+class SideBarRow extends StatelessWidget {
+  final String fieldName;
+  final String value;
+  const SideBarRow({super.key, required this.fieldName, required this.value});
 
-  @override
-  State<MainWindow> createState() => _MainWindowState();
-}
-
-class _MainWindowState extends State<MainWindow> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const Toolbar(),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(child: Container(),),
-                  VerticalDivider(),
-                  SideBar(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Row(children: [
+      SizedBox(width: firstColumnWidth, child: Text(fieldName, style: fieldNameStyle,)),
+      const SizedBox(width: 8,),
+      Expanded(child: Text(value, style: fieldValueStyle,),),
+    ],);
   }
 }
