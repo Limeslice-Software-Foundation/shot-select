@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RawFileState {
+  String get directory => throw _privateConstructorUsedError;
   List<RawFile> get files => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
@@ -33,7 +34,8 @@ abstract class $RawFileStateCopyWith<$Res> {
           RawFileState value, $Res Function(RawFileState) then) =
       _$RawFileStateCopyWithImpl<$Res, RawFileState>;
   @useResult
-  $Res call({List<RawFile> files, bool isLoading, bool isError});
+  $Res call(
+      {String directory, List<RawFile> files, bool isLoading, bool isError});
 }
 
 /// @nodoc
@@ -51,11 +53,16 @@ class _$RawFileStateCopyWithImpl<$Res, $Val extends RawFileState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? directory = null,
     Object? files = null,
     Object? isLoading = null,
     Object? isError = null,
   }) {
     return _then(_value.copyWith(
+      directory: null == directory
+          ? _value.directory
+          : directory // ignore: cast_nullable_to_non_nullable
+              as String,
       files: null == files
           ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
@@ -80,7 +87,8 @@ abstract class _$$RawFileStateImplCopyWith<$Res>
       __$$RawFileStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<RawFile> files, bool isLoading, bool isError});
+  $Res call(
+      {String directory, List<RawFile> files, bool isLoading, bool isError});
 }
 
 /// @nodoc
@@ -96,11 +104,16 @@ class __$$RawFileStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? directory = null,
     Object? files = null,
     Object? isLoading = null,
     Object? isError = null,
   }) {
     return _then(_$RawFileStateImpl(
+      directory: null == directory
+          ? _value.directory
+          : directory // ignore: cast_nullable_to_non_nullable
+              as String,
       files: null == files
           ? _value._files
           : files // ignore: cast_nullable_to_non_nullable
@@ -121,11 +134,14 @@ class __$$RawFileStateImplCopyWithImpl<$Res>
 
 class _$RawFileStateImpl implements _RawFileState {
   const _$RawFileStateImpl(
-      {required final List<RawFile> files,
+      {required this.directory,
+      required final List<RawFile> files,
       this.isLoading = false,
       this.isError = false})
       : _files = files;
 
+  @override
+  final String directory;
   final List<RawFile> _files;
   @override
   List<RawFile> get files {
@@ -143,7 +159,7 @@ class _$RawFileStateImpl implements _RawFileState {
 
   @override
   String toString() {
-    return 'RawFileState(files: $files, isLoading: $isLoading, isError: $isError)';
+    return 'RawFileState(directory: $directory, files: $files, isLoading: $isLoading, isError: $isError)';
   }
 
   @override
@@ -151,6 +167,8 @@ class _$RawFileStateImpl implements _RawFileState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RawFileStateImpl &&
+            (identical(other.directory, directory) ||
+                other.directory == directory) &&
             const DeepCollectionEquality().equals(other._files, _files) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -158,7 +176,7 @@ class _$RawFileStateImpl implements _RawFileState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
+  int get hashCode => Object.hash(runtimeType, directory,
       const DeepCollectionEquality().hash(_files), isLoading, isError);
 
   /// Create a copy of RawFileState
@@ -172,10 +190,13 @@ class _$RawFileStateImpl implements _RawFileState {
 
 abstract class _RawFileState implements RawFileState {
   const factory _RawFileState(
-      {required final List<RawFile> files,
+      {required final String directory,
+      required final List<RawFile> files,
       final bool isLoading,
       final bool isError}) = _$RawFileStateImpl;
 
+  @override
+  String get directory;
   @override
   List<RawFile> get files;
   @override

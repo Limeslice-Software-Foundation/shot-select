@@ -11,13 +11,14 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   file_picker: ^8.1.2
-  flutter_libraw: ^0.0.1
+  flutter_libraw: ^0.0.2
   flutter_riverpod: ^2.5.1
   font_awesome_flutter: ^10.7.0
   get_it: ^7.7.0
   injectable: ^2.3.5
   riverpod_annotation: ^2.3.5
   freezed_annotation: ^2.4.4
+  log4dart_plus: ^0.0.8
 
 dev_dependencies:
   flutter_test:

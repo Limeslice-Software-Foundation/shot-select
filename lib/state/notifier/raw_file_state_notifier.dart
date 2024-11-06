@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
 
 import '../../injection.dart';
 import '../../model/raw_file.dart';
@@ -20,7 +21,9 @@ import '../../service/raw_file_service.dart';
 import '../raw_file_state.dart';
 
 class RawFileStateNotifier extends StateNotifier<RawFileState> {
-  RawFileStateNotifier() : super(const RawFileState(files: []));
+  static final Logger logger = LogManager.getLogger('RawFileStateNotifier');
+
+  RawFileStateNotifier() : super(const RawFileState(directory: '', files: []));
 
   Future<void> loadFiles(String directory) async {
     state = state.copyWith(files: [], isError: false, isLoading: true);
@@ -28,8 +31,9 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
     try {
       RawFileService service = getIt<RawFileService>();
       List<RawFile> files = await service.loadFiles(directory);
-      state = state.copyWith(files: files);
+      state = state.copyWith(files: files, directory: directory);
     } catch (err) {
+      logger.error(err.toString());
       state = state.copyWith(isError: true);
     }
     finally {
