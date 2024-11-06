@@ -14,6 +14,9 @@
 // limitations under the License.
 import 'package:flutter/material.dart';
 
+import 'shot/shot_color.dart';
+import 'shot/shot_rating.dart';
+import 'shot/shot_tag.dart';
 import 'side_bar_row.dart';
 
 class SideBar extends StatelessWidget {
@@ -21,16 +24,26 @@ class SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: 285,
       child: Padding(
         padding: EdgeInsets.all(18),
         child: Column(
           children: [
-            Text('Shot Information', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-            SizedBox(height: 14,),
+            Text('Shot Rating', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+            SizedBox(height: 10,),
+            ShotTag(),
+            SizedBox(height: 6,),
+            ShotRating(),
+            SizedBox(height: 6,),
+            ShotColor(),
+            SizedBox(height: 10,),
             Divider(),
-            SizedBox(height: 14,),
+
+            SizedBox(height: 30,),
+
+            Text('Shot Information', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+            SizedBox(height: 12,),
             SideBarRow(fieldName: 'Filename', value: 'RAW_CANON_5D_ARGB.CR2'),
             SizedBox(height: 10,),
             SideBarRow(fieldName: 'Date', value: '2006-01-15'),
