@@ -16,6 +16,7 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_libraw/flutter_libraw.dart';
 
@@ -23,6 +24,10 @@ class RawFile {
   bool selected = false;
   final String fileName;
   late Pointer<libraw_data_t> ptr;
+
+  final int? rating = null;
+  final Color? color = null;
+  final bool? tagged = null;
 
   RawFile({required this.fileName}) {
     ptr = flutterLibRawBindings.libraw_init(0);
