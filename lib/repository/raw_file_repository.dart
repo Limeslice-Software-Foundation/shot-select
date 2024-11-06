@@ -33,7 +33,7 @@ class RawFileRepository {
       print(fileList);
       await Future.forEach(fileList, (FileSystemEntity entity) async {
         try {
-          RawFile rawFile = RawFile(fileName: entity.path);
+          RawFile rawFile = RawFile(fileName: entity.absolute.path);
           print('RawFile: ${entity.path}');
           int result = await rawFile.open();
           if(result==0) {
