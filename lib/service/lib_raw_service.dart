@@ -14,6 +14,7 @@
 // limitations under the License.
 
 import 'package:injectable/injectable.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
 
 import '../injection.dart';
 import '../repository/lib_raw_repository.dart';
@@ -21,8 +22,12 @@ import '../repository/lib_raw_repository.dart';
 @lazySingleton
 class LibRawService {
 
+  static final Logger logger = LogManager.getLogger('LibRawService');
+
   Future<bool> loadLibRaw() async {
+    logger.trace('loadLibRaw() = START');
     LibRawRepository repository = getIt<LibRawRepository>();
+    logger.trace('loadLibRaw() = END');
     return await repository.loadLibRawLib();
   }
 }

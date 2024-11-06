@@ -16,17 +16,20 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
 
 import 'injection.dart';
 import 'service/lib_raw_service.dart';
 import 'shot_select_app.dart';
 
 void main() async {
-
+  LogConfigurator.doBasicConfiguration();
   await runZonedGuarded(() async {
+    Logger logger = LogManager.getLogger('main');
     WidgetsFlutterBinding.ensureInitialized();
     configureDependencies();
 
+    logger.debug('Going to load lib raw library.');
     LibRawService service = getIt<LibRawService>();
     bool libLoaded = await service.loadLibRaw();
 

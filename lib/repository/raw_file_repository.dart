@@ -14,6 +14,7 @@
 // limitations under the License.
 import 'dart:io';
 import 'package:injectable/injectable.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
 import '../model/raw_file.dart';
 
 const List<String> rawFileExtensions = [
@@ -23,28 +24,28 @@ const List<String> rawFileExtensions = [
 @lazySingleton
 class RawFileRepository {
 
+  static final Logger logger = LogManager.getLogger('RawFileRepository');
+
   Future<List<RawFile>> loadFiles(Directory dir) async {
     List<RawFile> files = [];
     if(await dir.exists()) {
-      print('Directory exists.');
+      logger.debug('Directory exists.');
 
       List<FileSystemEntity> fileList = dir.listSync();
       fileList.retainWhere((entity)=> entity is File && rawFileExtensions.contains(_fileExtension(entity.path).toLowerCase()));
-      print(fileList);
+      logger.debug(fileList.toString());
       await Future.forEach(fileList, (FileSystemEntity entity) async {
         try {
           RawFile rawFile = RawFile(fileName: entity.absolute.path);
-          print('RawFile: ${entity.path}');
+          logger.debug('RawFile: ${entity.path}');
           int result = await rawFile.open();
           if(result==0) {
-            print('### TCM ### ${entity.path}');
             files.add(rawFile);
           } else {
-            print('### TCM ### result==$result');
+            logger.debug('rawFile.open() returned non zero error code: $result');
           }
         } catch (err, trace) {
-          print(err);
-          print(trace);
+          logger.error(err.toString(), null, trace);
         }
       });
     }

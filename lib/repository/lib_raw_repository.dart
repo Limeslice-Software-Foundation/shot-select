@@ -18,6 +18,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_libraw/flutter_libraw.dart';
 import 'package:injectable/injectable.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
 
 const String _appDirName = '.shotselect';
 const String _libName = 'libraw';
@@ -25,15 +26,18 @@ const String _libName = 'libraw';
 @lazySingleton
 class LibRawRepository {
 
+  static final Logger logger = LogManager.getLogger('LibRawRepository');
+
   Future<bool> loadLibRawLib() async {
     String libraryName = determineLibraryName();
     File libFile = await _extractLibFile(libraryName);
+    logger.debug('Library file: $libFile');
     try {
       flutterLibRawBindings =
           FlutterLibRawBindings(DynamicLibrary.open(libFile.path));
+      logger.info('Successfully loaded LibRaw library');
     } catch (err, strace) {
-      print(err);
-      print(strace);
+      logger.error('Failed to load lib raw', null, strace);
     }
     return true;
   }
