@@ -47,7 +47,7 @@ class Rating extends StatelessWidget {
         color: background,
         borderRadius: BorderRadius.circular(20),
       ),
-      width: 70,
+      width: 60,
 
       child: Padding(
         padding: const EdgeInsets.all(3),

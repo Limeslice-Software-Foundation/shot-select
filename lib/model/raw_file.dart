@@ -14,6 +14,7 @@
 // limitations under the License.
 
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
@@ -22,23 +23,23 @@ import 'package:flutter_libraw/flutter_libraw.dart';
 
 class RawFile {
   bool selected = false;
-  final String fileName;
+  final String path;
   late Pointer<libraw_data_t> ptr;
 
   final int? rating = null;
   final Color? color = null;
   final bool? tagged = null;
 
-  RawFile({required this.fileName}) {
+  RawFile({required this.path}) {
     ptr = flutterLibRawBindings.libraw_init(0);
   }
 
   Future<int> open() async {
-    print('Going to open raw file: $fileName');
+    print('Going to open raw file: $path');
     int result = flutterLibRawBindings.libraw_open_file(
-        ptr, fileName.toNativeUtf8().cast());
+        ptr, path.toNativeUtf8().cast());
     if (result != 0) {
-      print('Failed to open raw file: $fileName');
+      print('Failed to open raw file: $path');
     } else {
       print('Going to unpack thumbnail');
       result = flutterLibRawBindings.libraw_unpack_thumb(ptr);
@@ -47,7 +48,15 @@ class RawFile {
     return result;
   }
 
-  Future<Uint8List> getThumbnail() async {
+  String get fileName {
+    if(path.contains(Platform.pathSeparator)) {
+      return path.substring(path.lastIndexOf(Platform.pathSeparator)+1);
+    } else {
+      return path;
+    }
+  }
+
+  Uint8List getThumbnail() {
     return pointerToUint8List(
         ptr.ref.thumbnail.thumb, ptr.ref.thumbnail.tlength);
   }

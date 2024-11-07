@@ -19,6 +19,14 @@ import '../ui_state.dart';
 class UIStateNotifier extends StateNotifier<UIState> {
   UIStateNotifier() : super(const UIState());
 
+  void incrementCurrent() {
+    state = state.copyWith(current: state.current+1);
+  }
+
+  void decrementCurrent() {
+    state = state.copyWith(current: state.current-1);
+  }
+
   void noRating() {
     state = state.copyWith(filterNoRating: !state.filterNoRating);
   }
