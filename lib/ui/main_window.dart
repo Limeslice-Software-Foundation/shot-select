@@ -13,29 +13,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shot_select/ui/widgets/contact_sheet_view.dart';
 
+import '../state/providers.dart';
 import 'widgets/side_bar.dart';
 import 'widgets/toolbar.dart';
 
-class MainWindow extends StatefulWidget {
+class MainWindow extends ConsumerStatefulWidget {
   const MainWindow({super.key});
 
   @override
-  State<MainWindow> createState() => _MainWindowState();
+  ConsumerState<MainWindow> createState() => _MainWindowState();
 }
 
-class _MainWindowState extends State<MainWindow> {
+class _MainWindowState extends ConsumerState<MainWindow> {
+
+  /// Listen for key pressed events
+  bool _onKey(KeyEvent event) {
+    final key = event.logicalKey;
+    if (event is KeyUpEvent) {
+      int current = ref.watch(uiStateProvider).current;
+      if(key==LogicalKeyboardKey.arrowDown || key==LogicalKeyboardKey.arrowRight ) {
+        int fileCount = ref.watch(rawFileStateProvider).files.length;
+        if(current < fileCount-1) {
+          ref.read(uiStateProvider.notifier).incrementCurrent();
+        }
+      }
+      else if(key==LogicalKeyboardKey.arrowUp || key==LogicalKeyboardKey.arrowLeft ) {
+        if(current>0) {
+          ref.read(uiStateProvider.notifier).decrementCurrent();
+        }
+      }
+    }
+    return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ServicesBinding.instance.keyboard.addHandler(_onKey);
+  }
+
+  @override
+  void dispose() {
+    ServicesBinding.instance.keyboard.removeHandler(_onKey);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            const Toolbar(),
+            Toolbar(),
             Expanded(
               child: Row(
                 children: [
-                  Expanded(child: Container(),),
+                  Expanded(child: ContactSheetView(),),
                   VerticalDivider(),
                   SideBar(),
                 ],
