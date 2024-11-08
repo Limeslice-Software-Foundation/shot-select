@@ -20,45 +20,68 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_libraw/flutter_libraw.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
 
 class RawFile {
+  static final Logger logger = LogManager.getLogger('RawFile');
+
   bool selected = false;
   final String path;
+  late String fileName;
   late Pointer<libraw_data_t> ptr;
 
   final int? rating = null;
   final Color? color = null;
   final bool? tagged = null;
 
+  late DateTime timestamp;
+  late String cameraMake;
+  late String cameraModel;
+  late String lens;
+  late String aperture;
+  late String shutter;
+  late String iso;
+  late String focalLength;
+  late String dimension;
+
+  late Uint8List thumbNail;
+
   RawFile({required this.path}) {
     ptr = flutterLibRawBindings.libraw_init(0);
+    if(path.contains(Platform.pathSeparator)) {
+      fileName = path.substring(path.lastIndexOf(Platform.pathSeparator)+1);
+    } else {
+      fileName = path;
+    }
   }
 
   Future<int> open() async {
-    print('Going to open raw file: $path');
+    logger.debug('Going to open raw file: $path');
     int result = flutterLibRawBindings.libraw_open_file(
         ptr, path.toNativeUtf8().cast());
     if (result != 0) {
-      print('Failed to open raw file: $path');
+      logger.debug('Failed to open raw file: $path');
     } else {
-      print('Going to unpack thumbnail');
+      loadDataFromFile();
+      logger.debug('Going to unpack thumbnail');
       result = flutterLibRawBindings.libraw_unpack_thumb(ptr);
-      print(result);
+      thumbNail = pointerToUint8List(
+          ptr.ref.thumbnail.thumb, ptr.ref.thumbnail.tlength);
+      logger.debug('Unpack thumbnail result: $result');
     }
     return result;
   }
 
-  String get fileName {
-    if(path.contains(Platform.pathSeparator)) {
-      return path.substring(path.lastIndexOf(Platform.pathSeparator)+1);
-    } else {
-      return path;
-    }
-  }
-
-  Uint8List getThumbnail() {
-    return pointerToUint8List(
-        ptr.ref.thumbnail.thumb, ptr.ref.thumbnail.tlength);
+  void loadDataFromFile() {
+    timestamp = DateTime.fromMillisecondsSinceEpoch(ptr.ref.other.timestamp*1000);
+    cameraMake = arrayToString(ptr.ref.idata.make);
+    cameraModel = arrayToString(ptr.ref.idata.model);
+    lens = arrayToString(ptr.ref.lens.Lens);
+    aperture = 'f${ptr.ref.other.aperture.toStringAsPrecision(2)}';
+    shutter = '1/${(1/ptr.ref.other.shutter).toStringAsFixed(0)}s';
+    iso = '${ptr.ref.other.iso_speed.ceil()}';
+    focalLength = '${ptr.ref.other.focal_len.ceil()}mm';
+    dimension = '${ptr.ref.sizes.width} x ${ptr.ref.sizes.height}';
   }
 
   void close() {

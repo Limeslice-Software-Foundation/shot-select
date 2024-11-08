@@ -27,6 +27,10 @@ class UIStateNotifier extends StateNotifier<UIState> {
     state = state.copyWith(current: state.current-1);
   }
 
+  void setCurrent(int current) {
+    state = state.copyWith(current: current);
+  }
+
   void noRating() {
     state = state.copyWith(filterNoRating: !state.filterNoRating);
   }
