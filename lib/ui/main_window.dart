@@ -73,7 +73,6 @@ class _MainWindowState extends ConsumerState<MainWindow> {
               child: Row(
                 children: [
                   Expanded(child: ContactSheetView(),),
-                  VerticalDivider(),
                   SideBar(),
                 ],
               ),

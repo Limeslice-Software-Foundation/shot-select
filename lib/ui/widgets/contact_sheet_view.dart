@@ -42,42 +42,47 @@ class ContactSheetView extends ConsumerWidget {
       padding: const EdgeInsets.all(10.0), // padding around the grid
       itemCount: state.files.length, // total number of items
       itemBuilder: (context, index) {
-        return Card(
-          color: index==uiState.current ? midGray : null,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Image.memory(
-                      state.files[index].getThumbnail(),
+        return GestureDetector(
+          onTap: () {
+            ref.read(uiStateProvider.notifier).setCurrent(index);
+          },
+          child: Card(
+            color: index==uiState.current ? midGray : null,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Image.memory(
+                        state.files[index].thumbNail,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Row(
-                    children: [
-                      Rating(
-                        rating: state.files[index].rating,
-                        color: state.files[index].color,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            state.files[index].fileName,
-                            style: const TextStyle(fontSize: 8),
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Row(
+                      children: [
+                        Rating(
+                          rating: state.files[index].rating,
+                          color: state.files[index].color,
+                        ),
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              state.files[index].fileName,
+                              style: const TextStyle(fontSize: 8),
+                            ),
                           ),
                         ),
-                      ),
-                      Tag(
-                        tagged: state.files[index].tagged,
-                      ),
-                    ],
+                        Tag(
+                          tagged: state.files[index].tagged,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

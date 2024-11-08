@@ -13,62 +13,79 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
+import '../../state/providers.dart';
+import '../../state/raw_file_state.dart';
+import '../../state/ui_state.dart';
 import 'shot/shot_color.dart';
 import 'shot/shot_rating.dart';
 import 'shot/shot_tag.dart';
 import 'side_bar_row.dart';
 
-class SideBar extends StatelessWidget {
+DateFormat dateFormat = DateFormat.yMMMd();
+DateFormat timeFormat = DateFormat.Hms();
+
+class SideBar extends ConsumerWidget {
   const SideBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 285,
-      child: Padding(
-        padding: EdgeInsets.all(18),
-        child: Column(
-          children: [
-            Text('Shot Rating', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-            SizedBox(height: 10,),
-            ShotTag(),
-            SizedBox(height: 6,),
-            ShotRating(),
-            SizedBox(height: 6,),
-            ShotColor(),
-            SizedBox(height: 10,),
-            Divider(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    RawFileState state = ref.watch(rawFileStateProvider);
+    int currentIndex = ref.watch(uiStateProvider).current;
+    return state.files.isEmpty ? Container() :
+      Row(
+      children: [
+        const VerticalDivider(),
+        const SizedBox(width: 4,),
+        SizedBox(
+          width: 285,
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              children: [
+                Text('Shot Rating', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+                SizedBox(height: 10,),
+                ShotTag(),
+                SizedBox(height: 6,),
+                ShotRating(),
+                SizedBox(height: 6,),
+                ShotColor(),
+                SizedBox(height: 10,),
+                Divider(),
 
-            SizedBox(height: 30,),
+                SizedBox(height: 30,),
 
-            Text('Shot Information', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-            SizedBox(height: 12,),
-            SideBarRow(fieldName: 'Filename', value: 'RAW_CANON_5D_ARGB.CR2'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Date', value: '2006-01-15'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Time', value: '13:32:40'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Dimensions', value: '4640 x 3472'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Camera', value: 'Canon'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Model', value: 'EOS 5D'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Lens', value: 'OLYMPUS M.14-42mm F3.5-5.6 EZ'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Focal Length', value: '200mm'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Aperture', value: 'f3.5'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'Shutter', value: '1/15s'),
-            SizedBox(height: 10,),
-            SideBarRow(fieldName: 'ISO', value: '200'),
-            SizedBox(height: 10,),
-          ],
-        ),
-      ),
+                Text('Shot Information', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
+                SizedBox(height: 12,),
+                SideBarRow(fieldName: 'Filename', value: state.files[currentIndex].fileName),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Date', value: dateFormat.format(state.files[currentIndex].timestamp)),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Time', value: timeFormat.format(state.files[currentIndex].timestamp)),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Dimensions', value: state.files[currentIndex].dimension),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Camera', value: state.files[currentIndex].cameraMake),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Model', value: state.files[currentIndex].cameraModel),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Lens', value: state.files[currentIndex].lens),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Focal Length', value: state.files[currentIndex].focalLength),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Aperture', value: state.files[currentIndex].aperture),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'Shutter', value: state.files[currentIndex].shutter),
+                SizedBox(height: 10,),
+                SideBarRow(fieldName: 'ISO', value: state.files[currentIndex].iso),
+                SizedBox(height: 10,),
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 }
