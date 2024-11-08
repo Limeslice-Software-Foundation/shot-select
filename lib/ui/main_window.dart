@@ -15,9 +15,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shot_select/ui/widgets/contact_sheet_view.dart';
 
 import '../state/providers.dart';
+import '../state/ui_state.dart';
+import 'widgets/contact_sheet_view.dart';
+import 'widgets/loupe_view.dart';
 import 'widgets/side_bar.dart';
 import 'widgets/toolbar.dart';
 
@@ -64,16 +66,17 @@ class _MainWindowState extends ConsumerState<MainWindow> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    UIState uiState = ref.watch(uiStateProvider);
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Toolbar(),
+            const Toolbar(),
             Expanded(
               child: Row(
                 children: [
-                  Expanded(child: ContactSheetView(),),
-                  SideBar(),
+                  Expanded(child: uiState.showGridView ? const ContactSheetView() : const LoupeView(),),
+                  const SideBar(),
                 ],
               ),
             ),
