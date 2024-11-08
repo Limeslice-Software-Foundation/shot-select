@@ -12,16 +12,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shot_select/state/ui_state.dart';
-import 'package:shot_select/ui/widgets/rating.dart';
 
 import '../../constants/colors.dart';
 import '../../state/providers.dart';
 import '../../state/raw_file_state.dart';
+import '../../state/ui_state.dart';
+import 'rating.dart';
 import 'tag.dart';
 
 class ContactSheetView extends ConsumerWidget {
@@ -45,6 +43,10 @@ class ContactSheetView extends ConsumerWidget {
         return GestureDetector(
           onTap: () {
             ref.read(uiStateProvider.notifier).setCurrent(index);
+          },
+          onDoubleTap: () {
+            ref.read(uiStateProvider.notifier).setCurrent(index);
+            ref.read(uiStateProvider.notifier).showGridView(false);
           },
           child: Card(
             color: index==uiState.current ? midGray : null,
