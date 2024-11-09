@@ -14,21 +14,29 @@
 // limitations under the License.
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../state/providers.dart';
+import '../../../state/raw_file_state.dart';
+import '../../../state/ui_state.dart';
 import '../fa_button.dart';
 
-class ShotTag extends StatelessWidget {
+class ShotTag extends ConsumerWidget {
   final bool? tagged;
   const ShotTag({super.key, this.tagged});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    UIState uiState = ref.watch(uiStateProvider);
+    RawFileState state = ref.watch(rawFileStateProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FaButton(
           onPressed: () {
-
+            ref
+                .read(rawFileStateProvider.notifier)
+                .setTag(uiState.current, null);
           },
           isSelected: false,
           iconData: FontAwesomeIcons.square,
@@ -36,17 +44,23 @@ class ShotTag extends StatelessWidget {
         ),
         FaButton(
           onPressed: () {
-
+            ref
+                .read(rawFileStateProvider.notifier)
+                .setTag(uiState.current, true);
           },
-          isSelected: false,
+          isSelected: state.files[uiState.current].tagged,
           iconData: FontAwesomeIcons.squareCheck,
           highlightColor: Colors.green,
         ),
         FaButton(
           onPressed: () {
-
+            ref
+                .read(rawFileStateProvider.notifier)
+                .setTag(uiState.current, false);
           },
-          isSelected: false,
+          isSelected: state.files[uiState.current].tagged != null
+              ? !state.files[uiState.current].tagged!
+              : false,
           iconData: FontAwesomeIcons.squareXmark,
           highlightColor: Colors.red,
         ),

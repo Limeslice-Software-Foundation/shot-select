@@ -35,8 +35,9 @@ class _MainWindowState extends ConsumerState<MainWindow> {
   /// Listen for key pressed events
   bool _onKey(KeyEvent event) {
     final key = event.logicalKey;
+    int current = ref.watch(uiStateProvider).current;
     if (event is KeyUpEvent) {
-      int current = ref.watch(uiStateProvider).current;
+
       if(key==LogicalKeyboardKey.arrowDown || key==LogicalKeyboardKey.arrowRight ) {
         int fileCount = ref.watch(rawFileStateProvider).files.length;
         if(current < fileCount-1) {
@@ -47,6 +48,12 @@ class _MainWindowState extends ConsumerState<MainWindow> {
         if(current>0) {
           ref.read(uiStateProvider.notifier).decrementCurrent();
         }
+      } else if(key==LogicalKeyboardKey.keyT) {
+        ref.read(rawFileStateProvider.notifier).setTag(current, true);
+      } else if(key==LogicalKeyboardKey.keyU) {
+        ref.read(rawFileStateProvider.notifier).setTag(current, null);
+      } else if(key==LogicalKeyboardKey.keyX) {
+        ref.read(rawFileStateProvider.notifier).setTag(current, false);
       }
     }
     return true;
