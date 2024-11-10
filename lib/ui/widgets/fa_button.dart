@@ -46,6 +46,7 @@ class FaButton extends StatelessWidget {
       color: iconColor,
     );
     return IconButton(
+      focusNode: FocusNode(canRequestFocus: false),
       padding: const EdgeInsets.all(6.0),
       constraints: const BoxConstraints(),
       onPressed: onPressed,

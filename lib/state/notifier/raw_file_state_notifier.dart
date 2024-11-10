@@ -45,4 +45,9 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
     RawFileService service = getIt<RawFileService>();
     await service.closeAll(state.files);
   }
+
+  void setTag(int current, bool? tagged) {
+    state.files[current].tagged = tagged;
+    state = state.copyWith(files: state.files);
+  }
 }

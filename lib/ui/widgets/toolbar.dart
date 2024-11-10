@@ -16,9 +16,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shot_select/state/ui_state.dart';
 
 import '../../state/providers.dart';
+import '../../state/ui_state.dart';
 import 'fa_button.dart';
 
 class Toolbar extends ConsumerWidget {
@@ -30,6 +30,7 @@ class Toolbar extends ConsumerWidget {
     return Row(
       children: [
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Open Folder',
           onPressed: () async {
             String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
@@ -43,6 +44,7 @@ class Toolbar extends ConsumerWidget {
           ),
         ),
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Copy Images',
           onPressed: () {},
           icon: const Icon(
@@ -51,6 +53,7 @@ class Toolbar extends ConsumerWidget {
           ),
         ),
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Move Images',
           onPressed: () {},
           icon: const Icon(
@@ -59,6 +62,7 @@ class Toolbar extends ConsumerWidget {
           ),
         ),
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Delete Images',
           onPressed: () {},
           icon: const Icon(
@@ -219,6 +223,7 @@ class Toolbar extends ConsumerWidget {
         ),
 
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Contact Sheet View',
           onPressed: () {
             ref.read(uiStateProvider.notifier).showGridView(true);
@@ -227,6 +232,7 @@ class Toolbar extends ConsumerWidget {
           icon: const Icon(Icons.grid_view_rounded, size: 15),
         ),
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Loupe View',
           onPressed: () {
             ref.read(uiStateProvider.notifier).showGridView(false);
@@ -243,6 +249,7 @@ class Toolbar extends ConsumerWidget {
           ),
         ),
         IconButton(
+          focusNode: FocusNode(canRequestFocus: false),
           tooltip: 'Settings',
           onPressed: () {},
           icon: const Icon(Icons.settings, size: 15),

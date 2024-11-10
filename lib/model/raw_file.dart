@@ -30,9 +30,9 @@ class RawFile {
   late String fileName;
   late Pointer<libraw_data_t> ptr;
 
-  final int? rating = null;
-  final Color? color = null;
-  final bool? tagged = null;
+  int? rating;
+  Color? color;
+  bool? tagged;
 
   late DateTime timestamp;
   late String cameraMake;
