@@ -61,7 +61,7 @@ class LibRawRepository {
     bool exists = await file.exists();
     if(!exists) {
       ByteData byteData = await rootBundle.load('libraw/$assetName');
-      file.writeAsBytes(byteData.buffer.asUint8List());
+      await file.writeAsBytes(byteData.buffer.asUint8List());
     }
     return file;
   }
