@@ -26,30 +26,28 @@ class RawFileRepository {
 
   static final Logger logger = LogManager.getLogger('RawFileRepository');
 
-  Future<List<RawFile>> loadFiles(Directory dir) async {
-    List<RawFile> files = [];
+  Future<List<File>> findRawFiles(Directory dir) async {
+    List<File> files = [];
     if(await dir.exists()) {
-      logger.debug('Directory exists.');
-
       List<FileSystemEntity> fileList = dir.listSync();
       fileList.retainWhere((entity)=> entity is File && rawFileExtensions.contains(_fileExtension(entity.path).toLowerCase()));
-      logger.debug(fileList.toString());
-      await Future.forEach(fileList, (FileSystemEntity entity) async {
-        try {
-          RawFile rawFile = RawFile(path: entity.absolute.path);
-          logger.debug('RawFile: ${entity.path}');
-          int result = await rawFile.open();
-          if(result==0) {
-            files.add(rawFile);
-          } else {
-            logger.debug('rawFile.open() returned non zero error code: $result');
-          }
-        } catch (err, trace) {
-          logger.error(err.toString(), null, trace);
+      for(FileSystemEntity entity in fileList) {
+        if(entity is File) {
+          files.add(entity);
         }
-      });
+      }
     }
     return files;
+  }
+
+  Future<RawFile?> loadFile(File file, File thumbnailFile) async {
+    RawFile? rawFile = RawFile(path: file.absolute.path);
+    int result = await rawFile.open(thumbnailFile);
+    if(result!=0) {
+      logger.debug('rawFile.open() returned non zero error code: $result');
+      rawFile = null;
+    }
+    return rawFile;
   }
 
   Future<void> closeAll(List<RawFile> files) async {

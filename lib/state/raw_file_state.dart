@@ -17,7 +17,7 @@ import '../model/raw_file.dart';
 
 part 'raw_file_state.freezed.dart';
 
-@Freezed()
+@Freezed(makeCollectionsUnmodifiable: false)
 class RawFileState with _$RawFileState {
   const factory RawFileState({
     required String directory,

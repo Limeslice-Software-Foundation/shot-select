@@ -20,7 +20,10 @@ import 'package:flutter_libraw/flutter_libraw.dart';
 import 'package:injectable/injectable.dart';
 import 'package:log4dart_plus/log4dart_plus.dart';
 
-const String _appDirName = '.shotselect';
+import '../injection.dart';
+import 'add_dir_repository.dart';
+
+
 const String _libName = 'libraw';
 
 @lazySingleton
@@ -67,25 +70,9 @@ class LibRawRepository {
   }
 
   Directory _ensureApplicationDirectory() {
-    Directory home = _getHomeDirectory();
-    Directory appDir = Directory('${home.path}${Platform.pathSeparator}$_appDirName');
+    AppDirRepository repository = getIt<AppDirRepository>();
+    Directory appDir = repository.applicationDirectory();
     appDir.createSync();
     return appDir;
-  }
-
-  Directory _getHomeDirectory() {
-    String? home = "";
-    Map<String, String> envVars = Platform.environment;
-    if (Platform.isMacOS) {
-      home = envVars['HOME'];
-    } else if (Platform.isLinux) {
-      home = envVars['HOME'];
-    } else if (Platform.isWindows) {
-      home = envVars['UserProfile'];
-    }
-    if(home==null) {
-
-    }
-    return Directory(home!);
   }
 }

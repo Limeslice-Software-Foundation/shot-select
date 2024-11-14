@@ -18,17 +18,31 @@ import 'package:injectable/injectable.dart';
 
 import '../injection.dart';
 import '../model/raw_file.dart';
+import '../repository/add_dir_repository.dart';
 import '../repository/raw_file_repository.dart';
 
 @lazySingleton
 class RawFileService {
-  Future<List<RawFile>> loadFiles(String directory) async {
+
+  Future<List<File>> findRawFiles(Directory dir) async {
     RawFileRepository fileRepository = getIt<RawFileRepository>();
-    return await fileRepository.loadFiles(Directory(directory));
+    return await fileRepository.findRawFiles(dir);
+  }
+
+  Future<RawFile?> loadFile(File file, String selectedDirectory) async {
+    RawFileRepository fileRepository = getIt<RawFileRepository>();
+    AppDirRepository appDirRepository = getIt<AppDirRepository>();
+    File thumbnail = generateThumbnailFilename(file, selectedDirectory, appDirRepository.applicationDirectory());
+    await thumbnail.parent.create(recursive: true);
+    return await fileRepository.loadFile(file, thumbnail);
   }
 
   Future<void> closeAll(List<RawFile> files) async {
     RawFileRepository fileRepository = getIt<RawFileRepository>();
     await fileRepository.closeAll(files);
+  }
+
+  File generateThumbnailFilename(File file, String selectedDirectory, Directory applicationDirectory) {
+    return File('${applicationDirectory.absolute.path}${file.absolute.path.substring(selectedDirectory.length)}');
   }
 }

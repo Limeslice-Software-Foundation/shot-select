@@ -115,7 +115,7 @@ class __$$RawFileStateImplCopyWithImpl<$Res>
           : directory // ignore: cast_nullable_to_non_nullable
               as String,
       files: null == files
-          ? _value._files
+          ? _value.files
           : files // ignore: cast_nullable_to_non_nullable
               as List<RawFile>,
       isLoading: null == isLoading
@@ -135,21 +135,14 @@ class __$$RawFileStateImplCopyWithImpl<$Res>
 class _$RawFileStateImpl implements _RawFileState {
   const _$RawFileStateImpl(
       {required this.directory,
-      required final List<RawFile> files,
+      required this.files,
       this.isLoading = false,
-      this.isError = false})
-      : _files = files;
+      this.isError = false});
 
   @override
   final String directory;
-  final List<RawFile> _files;
   @override
-  List<RawFile> get files {
-    if (_files is EqualUnmodifiableListView) return _files;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_files);
-  }
-
+  final List<RawFile> files;
   @override
   @JsonKey()
   final bool isLoading;
@@ -169,7 +162,7 @@ class _$RawFileStateImpl implements _RawFileState {
             other is _$RawFileStateImpl &&
             (identical(other.directory, directory) ||
                 other.directory == directory) &&
-            const DeepCollectionEquality().equals(other._files, _files) &&
+            const DeepCollectionEquality().equals(other.files, files) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isError, isError) || other.isError == isError));
@@ -177,7 +170,7 @@ class _$RawFileStateImpl implements _RawFileState {
 
   @override
   int get hashCode => Object.hash(runtimeType, directory,
-      const DeepCollectionEquality().hash(_files), isLoading, isError);
+      const DeepCollectionEquality().hash(files), isLoading, isError);
 
   /// Create a copy of RawFileState
   /// with the given fields replaced by the non-null parameter values.

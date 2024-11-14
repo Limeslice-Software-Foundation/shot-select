@@ -26,15 +26,15 @@ class LoupeView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     RawFileState state = ref.watch(rawFileStateProvider);
     UIState uiState = ref.watch(uiStateProvider);
-    return InteractiveViewer(
+    return state.files.isEmpty ? Container() : InteractiveViewer(
       //transformationController: transformationController,
       //constrained: true,
       //alignment: Alignment.bottomRight,
       maxScale: 3,
       minScale: 1,
       //scaleEnabled: false,
-      child: Image.memory(
-        state.files[uiState.current].thumbNail,
+      child: Image.file(
+        state.files[uiState.current].largeThumbnailFile,
       ),
     );
   }
