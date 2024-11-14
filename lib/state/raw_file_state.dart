@@ -24,6 +24,7 @@ class RawFileState with _$RawFileState {
     required List<RawFile> files,
     @Default(false) bool isLoading,
     @Default(false) bool isError,
+    @Default(0) int numberRawFilesFound,
 
   }) = _RawFileState;
 }

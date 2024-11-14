@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shot_select/ui/widgets/statusbar.dart';
 
 import '../state/providers.dart';
 import '../state/ui_state.dart';
@@ -87,6 +88,7 @@ class _MainWindowState extends ConsumerState<MainWindow> {
                 ],
               ),
             ),
+            const Statusbar(),
           ],
         ),
       ),

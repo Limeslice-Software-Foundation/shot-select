@@ -240,20 +240,6 @@ class Toolbar extends ConsumerWidget {
           isSelected: !uiState.showGridView,
           icon: const Icon(Icons.image_rounded, size: 15),
         ),
-
-
-        const SizedBox(
-          height: 20,
-          child: VerticalDivider(
-            thickness: 1,
-          ),
-        ),
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Settings',
-          onPressed: () {},
-          icon: const Icon(Icons.settings, size: 15),
-        ),
       ],
     );
   }

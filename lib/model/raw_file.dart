@@ -92,6 +92,7 @@ class RawFile {
         }
       }
     }
+    close();
     return result;
   }
 

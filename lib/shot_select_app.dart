@@ -26,7 +26,7 @@ class ShotSelectApp extends StatelessWidget {
       title: 'Shot Select',
       theme: ThemeData(
         brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green, brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue, brightness: Brightness.dark),
         useMaterial3: true,
         fontFamily: 'Poppins',
       ),

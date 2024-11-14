@@ -20,6 +20,7 @@ mixin _$RawFileState {
   List<RawFile> get files => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
+  int get numberRawFilesFound => throw _privateConstructorUsedError;
 
   /// Create a copy of RawFileState
   /// with the given fields replaced by the non-null parameter values.
@@ -35,7 +36,11 @@ abstract class $RawFileStateCopyWith<$Res> {
       _$RawFileStateCopyWithImpl<$Res, RawFileState>;
   @useResult
   $Res call(
-      {String directory, List<RawFile> files, bool isLoading, bool isError});
+      {String directory,
+      List<RawFile> files,
+      bool isLoading,
+      bool isError,
+      int numberRawFilesFound});
 }
 
 /// @nodoc
@@ -57,6 +62,7 @@ class _$RawFileStateCopyWithImpl<$Res, $Val extends RawFileState>
     Object? files = null,
     Object? isLoading = null,
     Object? isError = null,
+    Object? numberRawFilesFound = null,
   }) {
     return _then(_value.copyWith(
       directory: null == directory
@@ -75,6 +81,10 @@ class _$RawFileStateCopyWithImpl<$Res, $Val extends RawFileState>
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
               as bool,
+      numberRawFilesFound: null == numberRawFilesFound
+          ? _value.numberRawFilesFound
+          : numberRawFilesFound // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -88,7 +98,11 @@ abstract class _$$RawFileStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String directory, List<RawFile> files, bool isLoading, bool isError});
+      {String directory,
+      List<RawFile> files,
+      bool isLoading,
+      bool isError,
+      int numberRawFilesFound});
 }
 
 /// @nodoc
@@ -108,6 +122,7 @@ class __$$RawFileStateImplCopyWithImpl<$Res>
     Object? files = null,
     Object? isLoading = null,
     Object? isError = null,
+    Object? numberRawFilesFound = null,
   }) {
     return _then(_$RawFileStateImpl(
       directory: null == directory
@@ -126,6 +141,10 @@ class __$$RawFileStateImplCopyWithImpl<$Res>
           ? _value.isError
           : isError // ignore: cast_nullable_to_non_nullable
               as bool,
+      numberRawFilesFound: null == numberRawFilesFound
+          ? _value.numberRawFilesFound
+          : numberRawFilesFound // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -137,7 +156,8 @@ class _$RawFileStateImpl implements _RawFileState {
       {required this.directory,
       required this.files,
       this.isLoading = false,
-      this.isError = false});
+      this.isError = false,
+      this.numberRawFilesFound = 0});
 
   @override
   final String directory;
@@ -149,10 +169,13 @@ class _$RawFileStateImpl implements _RawFileState {
   @override
   @JsonKey()
   final bool isError;
+  @override
+  @JsonKey()
+  final int numberRawFilesFound;
 
   @override
   String toString() {
-    return 'RawFileState(directory: $directory, files: $files, isLoading: $isLoading, isError: $isError)';
+    return 'RawFileState(directory: $directory, files: $files, isLoading: $isLoading, isError: $isError, numberRawFilesFound: $numberRawFilesFound)';
   }
 
   @override
@@ -165,12 +188,19 @@ class _$RawFileStateImpl implements _RawFileState {
             const DeepCollectionEquality().equals(other.files, files) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isError, isError) || other.isError == isError));
+            (identical(other.isError, isError) || other.isError == isError) &&
+            (identical(other.numberRawFilesFound, numberRawFilesFound) ||
+                other.numberRawFilesFound == numberRawFilesFound));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, directory,
-      const DeepCollectionEquality().hash(files), isLoading, isError);
+  int get hashCode => Object.hash(
+      runtimeType,
+      directory,
+      const DeepCollectionEquality().hash(files),
+      isLoading,
+      isError,
+      numberRawFilesFound);
 
   /// Create a copy of RawFileState
   /// with the given fields replaced by the non-null parameter values.
@@ -186,7 +216,8 @@ abstract class _RawFileState implements RawFileState {
       {required final String directory,
       required final List<RawFile> files,
       final bool isLoading,
-      final bool isError}) = _$RawFileStateImpl;
+      final bool isError,
+      final int numberRawFilesFound}) = _$RawFileStateImpl;
 
   @override
   String get directory;
@@ -196,6 +227,8 @@ abstract class _RawFileState implements RawFileState {
   bool get isLoading;
   @override
   bool get isError;
+  @override
+  int get numberRawFilesFound;
 
   /// Create a copy of RawFileState
   /// with the given fields replaced by the non-null parameter values.

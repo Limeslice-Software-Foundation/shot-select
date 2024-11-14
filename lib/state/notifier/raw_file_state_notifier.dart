@@ -28,11 +28,12 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
   RawFileStateNotifier() : super(const RawFileState(directory: '', files: []));
 
   Future<void> loadFiles(String directory) async {
-    state = state.copyWith(files: [], isError: false, isLoading: true);
+    state = state.copyWith(files: [], isError: false, isLoading: true, numberRawFilesFound: 0);
 
     try {
       RawFileService service = getIt<RawFileService>();
       List<File> rawFileList = await service.findRawFiles(Directory(directory));
+      state = state.copyWith(numberRawFilesFound: rawFileList.length);
       await Future.forEach(rawFileList, (File file) async {
         RawFile? rawFile = await service.loadFile(file, directory);
         if(rawFile != null) {

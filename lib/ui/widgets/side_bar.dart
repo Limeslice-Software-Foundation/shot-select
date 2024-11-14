@@ -52,8 +52,6 @@ class SideBar extends ConsumerWidget {
                 ShotRating(),
                 SizedBox(height: 6,),
                 ShotColor(),
-                SizedBox(height: 10,),
-                Divider(),
 
                 SizedBox(height: 30,),
 
