@@ -14,24 +14,36 @@
 // limitations under the License.
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ShotRating extends StatelessWidget {
-  final int? rating;
-  ShotRating({super.key, this.rating});
+import '../../../state/providers.dart';
+import '../../../state/raw_file_state.dart';
+import '../../../state/ui_state.dart';
+
+class ShotRating extends ConsumerWidget {
+  ShotRating({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    int c = rating?? 0;
+  Widget build(BuildContext context, WidgetRef ref) {
+    UIState uiState = ref.watch(uiStateProvider);
+    RawFileState state = ref.watch(rawFileStateProvider);
+    int c = state.files[uiState.current].rating?? 0;
     if(c > 5) c = 5;
 
     List<Widget> stars = [];
-    stars.add(IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.star, size: 18)));
+    stars.add(IconButton(onPressed: (){
+      ref.read(rawFileStateProvider.notifier).setRating(uiState.current, null);
+    }, icon: const FaIcon(FontAwesomeIcons.star, size: 18)));
     int blanks = 5-c;
     for(int i = 0; i < c; i++) {
-      stars.add(IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.solidStar, size: 18, color: Colors.yellow,)));
+      stars.add(IconButton(onPressed: (){
+        ref.read(rawFileStateProvider.notifier).setRating(uiState.current, i+1);
+      }, icon: const FaIcon(FontAwesomeIcons.solidStar, size: 18, color: Colors.yellow,)));
     }
     for(int i = 0; i < blanks; i++) {
-      stars.add(IconButton(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.solidStar, size: 18)));
+      stars.add(IconButton(onPressed: () {
+        ref.read(rawFileStateProvider.notifier).setRating(uiState.current, c+i+1);
+      }, icon: const FaIcon(FontAwesomeIcons.solidStar, size: 18)));
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

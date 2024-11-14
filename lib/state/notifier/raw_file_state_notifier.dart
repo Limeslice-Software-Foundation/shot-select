@@ -14,6 +14,7 @@
 // limitations under the License.
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log4dart_plus/log4dart_plus.dart';
 
@@ -56,6 +57,16 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
 
   void setTag(int current, bool? tagged) {
     state.files[current].tagged = tagged;
+    state = state.copyWith(files: state.files);
+  }
+
+  void setRating(int current, int? rating) {
+    state.files[current].rating = rating;
+    state = state.copyWith(files: state.files);
+  }
+
+  void setColor(int current, Color? color) {
+    state.files[current].color = color;
     state = state.copyWith(files: state.files);
   }
 }

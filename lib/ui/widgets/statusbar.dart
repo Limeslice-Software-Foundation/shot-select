@@ -27,6 +27,7 @@ class Statusbar extends ConsumerWidget {
     RawFileState state = ref.watch(rawFileStateProvider);
     UIState uiState = ref.watch(uiStateProvider);
     String message = '';
+    String fileName = '';
     double value = 0;
     if (state.isLoading) {
       message = 'Finding RAW files...';
@@ -37,21 +38,21 @@ class Statusbar extends ConsumerWidget {
     } else {
       if (state.files.length > 0) {
         message = '${uiState.current + 1} of ${state.files.length} files';
+        fileName = state.files[uiState.current].fileName;
       }
     }
     return SizedBox(
       height: 30,
       child: Row(
         children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: Text(
-                message,
-                style: const TextStyle(fontSize: 10),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(6),
+            child: Text(
+              message,
+              style: const TextStyle(fontSize: 10),
             ),
           ),
+          const Expanded(child: Center(),),
           state.isLoading
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(0, 3, 15, 3),
@@ -61,7 +62,13 @@ class Statusbar extends ConsumerWidget {
                         backgroundColor: Colors.blueGrey,
                         value: value,
                       ),),)
-              : Container()
+              : Padding(
+            padding: const EdgeInsets.fromLTRB(0, 6, 15, 6),
+            child: Text(
+              fileName,
+              style: const TextStyle(fontSize: 10),
+            ),
+          ),
         ],
       ),
     );

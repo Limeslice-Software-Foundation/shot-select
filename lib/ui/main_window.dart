@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shot_select/ui/widgets/statusbar.dart';
 
+import '../model/shot_color_enum.dart';
 import '../state/providers.dart';
 import '../state/ui_state.dart';
 import 'widgets/contact_sheet_view.dart';
@@ -55,7 +56,30 @@ class _MainWindowState extends ConsumerState<MainWindow> {
         ref.read(rawFileStateProvider.notifier).setTag(current, null);
       } else if(key==LogicalKeyboardKey.keyX) {
         ref.read(rawFileStateProvider.notifier).setTag(current, false);
+      }else if(key==LogicalKeyboardKey.digit0) {
+        ref.read(rawFileStateProvider.notifier).setRating(current, null);
+      }else if(key==LogicalKeyboardKey.digit1) {
+        ref.read(rawFileStateProvider.notifier).setRating(current, 1);
+      }else if(key==LogicalKeyboardKey.digit2) {
+        ref.read(rawFileStateProvider.notifier).setRating(current, 2);
+      }else if(key==LogicalKeyboardKey.digit3) {
+        ref.read(rawFileStateProvider.notifier).setRating(current, 3);
+      }else if(key==LogicalKeyboardKey.digit4) {
+        ref.read(rawFileStateProvider.notifier).setRating(current, 4);
+      }else if(key==LogicalKeyboardKey.digit5) {
+        ref.read(rawFileStateProvider.notifier).setRating(current, 5);
+      }else if(key==LogicalKeyboardKey.keyB) {
+        ref.read(rawFileStateProvider.notifier).setColor(current, ShotColorEnum.blue.color);
+      }else if(key==LogicalKeyboardKey.keyG) {
+        ref.read(rawFileStateProvider.notifier).setColor(current, ShotColorEnum.green.color);
+      }else if(key==LogicalKeyboardKey.keyR) {
+        ref.read(rawFileStateProvider.notifier).setColor(current, ShotColorEnum.red.color);
+      }else if(key==LogicalKeyboardKey.keyP) {
+        ref.read(rawFileStateProvider.notifier).setColor(current, ShotColorEnum.purple.color);
+      }else if(key==LogicalKeyboardKey.keyY) {
+        ref.read(rawFileStateProvider.notifier).setColor(current, ShotColorEnum.yellow.color);
       }
+
     }
     return true;
   }
