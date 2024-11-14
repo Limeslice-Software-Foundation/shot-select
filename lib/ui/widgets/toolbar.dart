@@ -29,47 +29,62 @@ class Toolbar extends ConsumerWidget {
     UIState uiState = ref.watch(uiStateProvider);
     return Row(
       children: [
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Open Folder',
-          onPressed: () async {
-            String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-            if (selectedDirectory != null) {
-              await ref.read(rawFileStateProvider.notifier).loadFiles(selectedDirectory);
+        PopupMenuButton<int>(
+          icon: FaIcon(FontAwesomeIcons.bars, size: 18,),
+          initialValue: 1,
+          onSelected: (int item) async {
+            if (item == 1) {
+              String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+              if (selectedDirectory != null) {
+                await ref.read(rawFileStateProvider.notifier).loadFiles(selectedDirectory);
+              }
             }
           },
-          icon: const Icon(
-            Icons.folder,
-            size: 17,
-          ),
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+            const PopupMenuItem<int>(
+              value: 1,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.folder,
+                  size: 17,
+                ),
+                title: Text('Open Folder'),
+              ),
+            ),
+            const PopupMenuItem<int>(
+              value: 2,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.file_copy,
+                  size: 17,
+                ),
+                title: Text('Copy Images'),
+              )
+            ),
+            const PopupMenuItem<int>(
+              value: 3,
+              child: ListTile(
+                leading: const Icon(
+                  Icons.drive_file_move,
+                  size: 17,
+                ),
+                title: Text('Move Images'),
+              )
+            ),
+            const PopupMenuItem<int>(
+              value: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.delete,
+                  size: 17,
+                ),
+                title: Text('Delete Images'),
+              ),
+            ),
+          ],
         ),
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Copy Images',
-          onPressed: () {},
-          icon: const Icon(
-            Icons.file_copy,
-            size: 17,
-          ),
-        ),
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Move Images',
-          onPressed: () {},
-          icon: const Icon(
-            Icons.drive_file_move,
-            size: 17,
-          ),
-        ),
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Delete Images',
-          onPressed: () {},
-          icon: const Icon(
-            Icons.delete,
-            size: 17,
-          ),
-        ),
+
+
         Expanded(
           child: Center(
             child: Row(
@@ -222,24 +237,48 @@ class Toolbar extends ConsumerWidget {
           ),
         ),
 
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Contact Sheet View',
-          onPressed: () {
-            ref.read(uiStateProvider.notifier).showGridView(true);
-          },
-          isSelected: uiState.showGridView,
-          icon: const Icon(Icons.grid_view_rounded, size: 15),
-        ),
-        IconButton(
-          focusNode: FocusNode(canRequestFocus: false),
-          tooltip: 'Loupe View',
-          onPressed: () {
-            ref.read(uiStateProvider.notifier).showGridView(false);
-          },
-          isSelected: !uiState.showGridView,
-          icon: const Icon(Icons.image_rounded, size: 15),
-        ),
+
+        // IconButton(
+        //   focusNode: FocusNode(canRequestFocus: false),
+        //   tooltip: 'Contact Sheet View',
+        //   onPressed: () {
+        //     ref.read(uiStateProvider.notifier).showGridView(true);
+        //   },
+        //   isSelected: uiState.showGridView,
+        //   icon: const Icon(Icons.grid_view_rounded, size: 15),
+        // ),
+        // IconButton(
+        //   focusNode: FocusNode(canRequestFocus: false),
+        //   tooltip: 'Loupe View',
+        //   onPressed: () {
+        //     ref.read(uiStateProvider.notifier).showGridView(false);
+        //   },
+        //   isSelected: !uiState.showGridView,
+        //   icon: const Icon(Icons.image_rounded, size: 15),
+        // ),
+
+        SizedBox(
+          width: 300,
+          child: Center(
+            child: SegmentedButton<bool>(
+
+              segments: const <ButtonSegment<bool>>[
+                ButtonSegment<bool>(value: true, label: Text('Contact Sheet', style: TextStyle(fontSize: 10),),),
+                ButtonSegment<bool>(value: false, label: Text('Loupe', style: TextStyle(fontSize: 10),),),
+              ],
+              selected: {uiState.showGridView},
+              onSelectionChanged: (Set<bool> newSelection) {
+                ref.read(uiStateProvider.notifier).showGridView(newSelection.first);
+              },
+              multiSelectionEnabled: false,
+              selectedIcon: null,
+              showSelectedIcon: false,
+            ),
+          ),
+        )
+
+
+
       ],
     );
   }

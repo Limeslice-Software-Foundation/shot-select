@@ -25,6 +25,7 @@ class UIState with _$UIState {
     @Default(0) int totalFiles,
 
     @Default(true) bool showGridView,
+    @Default(true) bool showSideBar,
 
     @Default(false) bool filterNoRating,
     @Default(false) bool filterOneStar,
