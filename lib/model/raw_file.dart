@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_libraw/flutter_libraw.dart';
 import 'package:log4dart_plus/log4dart_plus.dart';
+import 'package:image/image.dart' as img;
 
 class RawFile {
   static final Logger logger = LogManager.getLogger('RawFile');
@@ -45,6 +46,7 @@ class RawFile {
   late String dimension;
 
   late Uint8List thumbNail;
+  late File largeThumbnailFile;
 
   RawFile({required this.path}) {
     ptr = flutterLibRawBindings.libraw_init(0);
@@ -55,24 +57,50 @@ class RawFile {
     }
   }
 
-  Future<int> open() async {
-    logger.debug('Going to open raw file: $path');
+  Future<int> open(File thumbnailFile) async {
     int result = flutterLibRawBindings.libraw_open_file(
         ptr, path.toNativeUtf8().cast());
     if (result != 0) {
       logger.debug('Failed to open raw file: $path');
     } else {
-      loadDataFromFile();
-      logger.debug('Going to unpack thumbnail');
+      _loadDataFromFile();
       result = flutterLibRawBindings.libraw_unpack_thumb(ptr);
-      thumbNail = pointerToUint8List(
-          ptr.ref.thumbnail.thumb, ptr.ref.thumbnail.tlength);
-      logger.debug('Unpack thumbnail result: $result');
+      if(result != 0 ) {
+        logger.debug('Failed to unpack thumbnail: $result');
+      } else {
+
+        Uint8List bigThumbNail = pointerToUint8List(
+            ptr.ref.thumbnail.thumb, ptr.ref.thumbnail.tlength);
+
+
+        img.Image? decodedThumbnail;
+        if(ptr.ref.thumbnail.tformat==LibRaw_thumbnail_formats.LIBRAW_THUMBNAIL_JPEG.value) {
+          decodedThumbnail = img.decodeJpg(bigThumbNail);
+          largeThumbnailFile = File('${thumbnailFile.absolute.path}.jpg');
+        } else if(ptr.ref.thumbnail.tformat==LibRaw_thumbnail_formats.LIBRAW_THUMBNAIL_BITMAP.value ||
+            ptr.ref.thumbnail.tformat==LibRaw_thumbnail_formats.LIBRAW_THUMBNAIL_BITMAP16.value) {
+          decodedThumbnail = img.decodeBmp(bigThumbNail);
+          largeThumbnailFile = File('${thumbnailFile.absolute.path}.bmp');
+        } else {
+          logger.debug('Unhandled thumbnail format');
+          decodedThumbnail = null;
+        }
+        await largeThumbnailFile.writeAsBytes(bigThumbNail);
+        if(decodedThumbnail != null) {
+          var smallThumbnail = img.copyResize(decodedThumbnail, width: 300, maintainAspect: true);
+          thumbNail = img.encodeJpg(smallThumbnail, quality: 75);
+        }
+      }
     }
+    close();
     return result;
   }
 
-  void loadDataFromFile() {
+  void _setThumbnailFile(Directory appDir) {
+
+  }
+
+  void _loadDataFromFile() {
     timestamp = DateTime.fromMillisecondsSinceEpoch(ptr.ref.other.timestamp*1000);
     cameraMake = arrayToString(ptr.ref.idata.make);
     cameraModel = arrayToString(ptr.ref.idata.model);

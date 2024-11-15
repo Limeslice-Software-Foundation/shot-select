@@ -33,8 +33,10 @@ class SideBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     RawFileState state = ref.watch(rawFileStateProvider);
+    UIState uiState = ref.watch(uiStateProvider);
     int currentIndex = ref.watch(uiStateProvider).current;
     return state.files.isEmpty ? Container() :
+        uiState.showSideBar ?
       Row(
       children: [
         const VerticalDivider(),
@@ -42,18 +44,28 @@ class SideBar extends ConsumerWidget {
         SizedBox(
           width: 285,
           child: Padding(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(0),
             child: Column(
               children: [
-                Text('Shot Rating', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
-                SizedBox(height: 10,),
+                Container(
+                  color: Colors.blueGrey,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(child: Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0) ,child: Text('Shot Rating', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),),),
+                      IconButton(onPressed: (){
+                        ref.read(uiStateProvider.notifier).showSideBar(false);
+                      }, icon: const Icon(Icons.chevron_right),),
+                    ],
+
+                  ),
+                ),
+                SizedBox(height: 6,),
                 ShotTag(),
                 SizedBox(height: 6,),
                 ShotRating(),
                 SizedBox(height: 6,),
                 ShotColor(),
-                SizedBox(height: 10,),
-                Divider(),
 
                 SizedBox(height: 30,),
 
@@ -86,6 +98,11 @@ class SideBar extends ConsumerWidget {
           ),
         )
       ],
+    ) : Container(
+          color: Colors.blueGrey,
+      child: SizedBox(width: 30, child: Center(child: IconButton(onPressed: (){
+            ref.read(uiStateProvider.notifier).showSideBar(true);
+          }, icon: const Icon(Icons.chevron_left),),),),
     );
   }
 }

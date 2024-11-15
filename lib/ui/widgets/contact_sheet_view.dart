@@ -71,9 +71,12 @@ class ContactSheetView extends ConsumerWidget {
                         ),
                         Expanded(
                           child: Center(
-                            child: Text(
-                              state.files[index].fileName,
-                              style: const TextStyle(fontSize: 8),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                              child: Text(
+                                state.files[index].fileName,
+                                style: const TextStyle(fontSize: 8),
+                              ),
                             ),
                           ),
                         ),

@@ -12,6 +12,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log4dart_plus/log4dart_plus.dart';
 
@@ -26,14 +29,20 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
   RawFileStateNotifier() : super(const RawFileState(directory: '', files: []));
 
   Future<void> loadFiles(String directory) async {
-    state = state.copyWith(files: [], isError: false, isLoading: true);
+    state = state.copyWith(files: [], isError: false, isLoading: true, numberRawFilesFound: 0);
 
     try {
       RawFileService service = getIt<RawFileService>();
-      List<RawFile> files = await service.loadFiles(directory);
-      state = state.copyWith(files: files, directory: directory);
-    } catch (err) {
-      logger.error(err.toString());
+      List<File> rawFileList = await service.findRawFiles(Directory(directory));
+      state = state.copyWith(numberRawFilesFound: rawFileList.length);
+      await Future.forEach(rawFileList, (File file) async {
+        RawFile? rawFile = await service.loadFile(file, directory);
+        if(rawFile != null) {
+          state = state.copyWith(files: [...state.files, rawFile]);
+        }
+      });
+    } catch (err, trace) {
+      logger.error(err.toString(), null, trace);
       state = state.copyWith(isError: true);
     }
     finally {
@@ -48,6 +57,16 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
 
   void setTag(int current, bool? tagged) {
     state.files[current].tagged = tagged;
+    state = state.copyWith(files: state.files);
+  }
+
+  void setRating(int current, int? rating) {
+    state.files[current].rating = rating;
+    state = state.copyWith(files: state.files);
+  }
+
+  void setColor(int current, Color? color) {
+    state.files[current].color = color;
     state = state.copyWith(files: state.files);
   }
 }

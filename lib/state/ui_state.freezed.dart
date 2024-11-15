@@ -19,6 +19,7 @@ mixin _$UIState {
   int get current => throw _privateConstructorUsedError;
   int get totalFiles => throw _privateConstructorUsedError;
   bool get showGridView => throw _privateConstructorUsedError;
+  bool get showSideBar => throw _privateConstructorUsedError;
   bool get filterNoRating => throw _privateConstructorUsedError;
   bool get filterOneStar => throw _privateConstructorUsedError;
   bool get filterTwoStar => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $UIStateCopyWith<$Res> {
       {int current,
       int totalFiles,
       bool showGridView,
+      bool showSideBar,
       bool filterNoRating,
       bool filterOneStar,
       bool filterTwoStar,
@@ -85,6 +87,7 @@ class _$UIStateCopyWithImpl<$Res, $Val extends UIState>
     Object? current = null,
     Object? totalFiles = null,
     Object? showGridView = null,
+    Object? showSideBar = null,
     Object? filterNoRating = null,
     Object? filterOneStar = null,
     Object? filterTwoStar = null,
@@ -113,6 +116,10 @@ class _$UIStateCopyWithImpl<$Res, $Val extends UIState>
       showGridView: null == showGridView
           ? _value.showGridView
           : showGridView // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showSideBar: null == showSideBar
+          ? _value.showSideBar
+          : showSideBar // ignore: cast_nullable_to_non_nullable
               as bool,
       filterNoRating: null == filterNoRating
           ? _value.filterNoRating
@@ -189,6 +196,7 @@ abstract class _$$UIStateImplCopyWith<$Res> implements $UIStateCopyWith<$Res> {
       {int current,
       int totalFiles,
       bool showGridView,
+      bool showSideBar,
       bool filterNoRating,
       bool filterOneStar,
       bool filterTwoStar,
@@ -222,6 +230,7 @@ class __$$UIStateImplCopyWithImpl<$Res>
     Object? current = null,
     Object? totalFiles = null,
     Object? showGridView = null,
+    Object? showSideBar = null,
     Object? filterNoRating = null,
     Object? filterOneStar = null,
     Object? filterTwoStar = null,
@@ -250,6 +259,10 @@ class __$$UIStateImplCopyWithImpl<$Res>
       showGridView: null == showGridView
           ? _value.showGridView
           : showGridView // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showSideBar: null == showSideBar
+          ? _value.showSideBar
+          : showSideBar // ignore: cast_nullable_to_non_nullable
               as bool,
       filterNoRating: null == filterNoRating
           ? _value.filterNoRating
@@ -322,6 +335,7 @@ class _$UIStateImpl implements _UIState {
       {this.current = 0,
       this.totalFiles = 0,
       this.showGridView = true,
+      this.showSideBar = true,
       this.filterNoRating = false,
       this.filterOneStar = false,
       this.filterTwoStar = false,
@@ -347,6 +361,9 @@ class _$UIStateImpl implements _UIState {
   @override
   @JsonKey()
   final bool showGridView;
+  @override
+  @JsonKey()
+  final bool showSideBar;
   @override
   @JsonKey()
   final bool filterNoRating;
@@ -395,7 +412,7 @@ class _$UIStateImpl implements _UIState {
 
   @override
   String toString() {
-    return 'UIState(current: $current, totalFiles: $totalFiles, showGridView: $showGridView, filterNoRating: $filterNoRating, filterOneStar: $filterOneStar, filterTwoStar: $filterTwoStar, filterThreeStar: $filterThreeStar, filterFourStar: $filterFourStar, filterFiveStar: $filterFiveStar, filterNoColor: $filterNoColor, filterRedColor: $filterRedColor, filterYellowColor: $filterYellowColor, filterGreenColor: $filterGreenColor, filterBlueColor: $filterBlueColor, filterPurpleColor: $filterPurpleColor, filterRejected: $filterRejected, filterTagged: $filterTagged, filterUntagged: $filterUntagged)';
+    return 'UIState(current: $current, totalFiles: $totalFiles, showGridView: $showGridView, showSideBar: $showSideBar, filterNoRating: $filterNoRating, filterOneStar: $filterOneStar, filterTwoStar: $filterTwoStar, filterThreeStar: $filterThreeStar, filterFourStar: $filterFourStar, filterFiveStar: $filterFiveStar, filterNoColor: $filterNoColor, filterRedColor: $filterRedColor, filterYellowColor: $filterYellowColor, filterGreenColor: $filterGreenColor, filterBlueColor: $filterBlueColor, filterPurpleColor: $filterPurpleColor, filterRejected: $filterRejected, filterTagged: $filterTagged, filterUntagged: $filterUntagged)';
   }
 
   @override
@@ -408,6 +425,8 @@ class _$UIStateImpl implements _UIState {
                 other.totalFiles == totalFiles) &&
             (identical(other.showGridView, showGridView) ||
                 other.showGridView == showGridView) &&
+            (identical(other.showSideBar, showSideBar) ||
+                other.showSideBar == showSideBar) &&
             (identical(other.filterNoRating, filterNoRating) ||
                 other.filterNoRating == filterNoRating) &&
             (identical(other.filterOneStar, filterOneStar) ||
@@ -441,26 +460,28 @@ class _$UIStateImpl implements _UIState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      current,
-      totalFiles,
-      showGridView,
-      filterNoRating,
-      filterOneStar,
-      filterTwoStar,
-      filterThreeStar,
-      filterFourStar,
-      filterFiveStar,
-      filterNoColor,
-      filterRedColor,
-      filterYellowColor,
-      filterGreenColor,
-      filterBlueColor,
-      filterPurpleColor,
-      filterRejected,
-      filterTagged,
-      filterUntagged);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        current,
+        totalFiles,
+        showGridView,
+        showSideBar,
+        filterNoRating,
+        filterOneStar,
+        filterTwoStar,
+        filterThreeStar,
+        filterFourStar,
+        filterFiveStar,
+        filterNoColor,
+        filterRedColor,
+        filterYellowColor,
+        filterGreenColor,
+        filterBlueColor,
+        filterPurpleColor,
+        filterRejected,
+        filterTagged,
+        filterUntagged
+      ]);
 
   /// Create a copy of UIState
   /// with the given fields replaced by the non-null parameter values.
@@ -476,6 +497,7 @@ abstract class _UIState implements UIState {
       {final int current,
       final int totalFiles,
       final bool showGridView,
+      final bool showSideBar,
       final bool filterNoRating,
       final bool filterOneStar,
       final bool filterTwoStar,
@@ -498,6 +520,8 @@ abstract class _UIState implements UIState {
   int get totalFiles;
   @override
   bool get showGridView;
+  @override
+  bool get showSideBar;
   @override
   bool get filterNoRating;
   @override

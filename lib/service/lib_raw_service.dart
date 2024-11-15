@@ -25,9 +25,7 @@ class LibRawService {
   static final Logger logger = LogManager.getLogger('LibRawService');
 
   Future<bool> loadLibRaw() async {
-    logger.trace('loadLibRaw() = START');
     LibRawRepository repository = getIt<LibRawRepository>();
-    logger.trace('loadLibRaw() = END');
     return await repository.loadLibRawLib();
   }
 }

@@ -17,13 +17,14 @@ import '../model/raw_file.dart';
 
 part 'raw_file_state.freezed.dart';
 
-@Freezed()
+@Freezed(makeCollectionsUnmodifiable: false)
 class RawFileState with _$RawFileState {
   const factory RawFileState({
     required String directory,
     required List<RawFile> files,
     @Default(false) bool isLoading,
     @Default(false) bool isError,
+    @Default(0) int numberRawFilesFound,
 
   }) = _RawFileState;
 }

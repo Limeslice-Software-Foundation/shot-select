@@ -11,6 +11,7 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import 'repository/add_dir_repository.dart' as _i369;
 import 'repository/lib_raw_repository.dart' as _i63;
 import 'repository/raw_file_repository.dart' as _i270;
 import 'service/lib_raw_service.dart' as _i681;
@@ -31,6 +32,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i270.RawFileRepository>(() => _i270.RawFileRepository());
     gh.lazySingleton<_i772.RawFileService>(() => _i772.RawFileService());
     gh.lazySingleton<_i681.LibRawService>(() => _i681.LibRawService());
+    gh.lazySingleton<_i369.AppDirRepository>(() => _i369.AppDirRepository());
     return this;
   }
 }

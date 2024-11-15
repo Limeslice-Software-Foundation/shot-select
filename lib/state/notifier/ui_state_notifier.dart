@@ -94,4 +94,7 @@ class UIStateNotifier extends StateNotifier<UIState> {
   void showGridView(bool showGridView) {
     state = state.copyWith(showGridView: showGridView);
   }
+  void showSideBar(bool showSideBar) {
+    state = state.copyWith(showSideBar: showSideBar);
+  }
 }

@@ -22,8 +22,7 @@ import '../../../state/ui_state.dart';
 import '../fa_button.dart';
 
 class ShotTag extends ConsumerWidget {
-  final bool? tagged;
-  const ShotTag({super.key, this.tagged});
+  const ShotTag({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
