@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:log4dart_plus/log4dart_plus.dart';
 
@@ -26,21 +24,19 @@ import '../raw_file_state.dart';
 class RawFileStateNotifier extends StateNotifier<RawFileState> {
   static final Logger logger = LogManager.getLogger('RawFileStateNotifier');
 
-  RawFileStateNotifier() : super(const RawFileState(directory: '', files: []));
+  RawFileStateNotifier() : super(const RawFileState(directory: '', files: [], rawFiles: []));
 
   Future<void> loadFiles(String directory) async {
-    state = state.copyWith(files: [], isError: false, isLoading: true, numberRawFilesFound: 0);
+    state = state.copyWith(files: [], rawFiles: [], isError: false, isLoading: true, current: 0);
 
     try {
       RawFileService service = getIt<RawFileService>();
       List<File> rawFileList = await service.findRawFiles(Directory(directory));
-      state = state.copyWith(numberRawFilesFound: rawFileList.length);
-      await Future.forEach(rawFileList, (File file) async {
-        RawFile? rawFile = await service.loadFile(file, directory);
-        if(rawFile != null) {
-          state = state.copyWith(files: [...state.files, rawFile]);
-        }
-      });
+      state = state.copyWith(files: rawFileList);
+      if(rawFileList.isNotEmpty) {
+        RawFile? rawFile = await service.loadFile(rawFileList[0]);
+        state = state.copyWith(currentFile: rawFile);
+      }
     } catch (err, trace) {
       logger.error(err.toString(), null, trace);
       state = state.copyWith(isError: true);
@@ -50,23 +46,40 @@ class RawFileStateNotifier extends StateNotifier<RawFileState> {
     }
   }
 
-  Future<void> closeAllFiles() async {
-    RawFileService service = getIt<RawFileService>();
-    await service.closeAll(state.files);
+  Future<void> incrementFile() async {
+    state = state.copyWith(isLoading: true, isError: false);
+
+    try {
+      int nextIndex = state.current+1;
+      logger.debug('nextIndex=[$nextIndex]');
+      RawFileService service = getIt<RawFileService>();
+      logger.debug('Closing current raw file.');
+      state.currentFile!.close();
+      state = state.copyWith(currentFile: null, current: nextIndex);
+      if(state.current < state.files.length) {
+        logger.debug('Loading next file');
+        RawFile? rawFile = await service.loadFile(state.files[nextIndex]);
+        state = state.copyWith(currentFile: rawFile);
+      }
+    } catch (err, trace) {
+      print(trace);
+      logger.error(err.toString(), null, trace);
+      state = state.copyWith(isError: true);
+    }
+    finally {
+      state = state.copyWith(isLoading: false);
+    }
   }
 
-  void setTag(int current, bool? tagged) {
-    state.files[current].tagged = tagged;
-    state = state.copyWith(files: state.files);
+  Future<void> tagCurrentImage(bool tagged) async {
+    RawFile rawFile = state.currentFile!;
+    rawFile.tagged = tagged;
+    state = state.copyWith(currentFile: rawFile, rawFiles: [...state.rawFiles, rawFile]);
+    await incrementFile();
   }
 
-  void setRating(int current, int? rating) {
-    state.files[current].rating = rating;
-    state = state.copyWith(files: state.files);
+  void showTaggedImages(bool tagged) {
+    state = state.copyWith(showSelected: tagged);
   }
 
-  void setColor(int current, Color? color) {
-    state.files[current].color = color;
-    state = state.copyWith(files: state.files);
-  }
 }

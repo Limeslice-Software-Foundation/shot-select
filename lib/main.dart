@@ -24,14 +24,16 @@ import 'shot_select_app.dart';
 
 void main() async {
   LogConfigurator.doBasicConfiguration();
+  Logger logger = LogManager.getLogger('main');
   await runZonedGuarded(() async {
-    Logger logger = LogManager.getLogger('main');
     WidgetsFlutterBinding.ensureInitialized();
     configureDependencies();
 
-    logger.debug('Going to load lib raw library.');
     LibRawService service = getIt<LibRawService>();
     bool libLoaded = await service.loadLibRaw();
+    if(libLoaded) {
+      logger.debug('Lib raw library loaded successfully.');
+    }
 
     runApp(
       const ProviderScope(
@@ -40,7 +42,6 @@ void main() async {
     );
 
   }, (exception, stackTrace) async {
-   print(exception);
-   print(stackTrace);
+   //logger.error(exception.toString(), exception, stackTrace);
   });
 }

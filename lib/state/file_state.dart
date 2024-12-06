@@ -12,17 +12,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:io';
 
-import 'file_state.dart';
-import 'notifier/file_state_notifier.dart';
-import 'notifier/raw_file_state_notifier.dart';
-import 'raw_file_state.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import '../model/raw_file.dart';
 
-final rawFileStateProvider = StateNotifierProvider<RawFileStateNotifier, RawFileState>((ref) {
-  return RawFileStateNotifier();
-});
+part 'file_state.freezed.dart';
 
-final fileStateProvider = StateNotifierProvider<FileStateNotifier, FileState>((ref) {
-  return FileStateNotifier();
-});
+@Freezed(makeCollectionsUnmodifiable: false)
+class FileState with _$FileState {
+  const factory FileState({
+    required String directory,
+    required List<RawFile> rawFiles,
+    @Default(false) bool inProgress,
+    @Default(false) bool isError,
+    @Default(0) int current,
+
+  }) = _FileState;
+}

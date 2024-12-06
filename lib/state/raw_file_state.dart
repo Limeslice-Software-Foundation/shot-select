@@ -12,6 +12,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../model/raw_file.dart';
 
@@ -21,10 +23,13 @@ part 'raw_file_state.freezed.dart';
 class RawFileState with _$RawFileState {
   const factory RawFileState({
     required String directory,
-    required List<RawFile> files,
+    required List<File> files,
+    required List<RawFile> rawFiles,
+    @Default(null) RawFile? currentFile,
     @Default(false) bool isLoading,
     @Default(false) bool isError,
-    @Default(0) int numberRawFilesFound,
+    @Default(true) bool showSelected,
+    @Default(0) int current,
 
   }) = _RawFileState;
 }

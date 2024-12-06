@@ -18,7 +18,7 @@ class ShotColorEnum {
   static final ShotColorEnum green = ShotColorEnum(color: Colors.green, name: 'Green');
   static final ShotColorEnum purple = ShotColorEnum(color: Colors.purple, name: 'Purple');
   static final ShotColorEnum red = ShotColorEnum(color: Colors.red, name: 'Red');
-  static final ShotColorEnum yellow = ShotColorEnum(color: Colors.yellow, name: 'Yellow');
+  static final ShotColorEnum yellow = ShotColorEnum(color: Color.fromRGBO(230, 180, 0, 1), name: 'Yellow');
 
 
   final Color color;

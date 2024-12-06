@@ -12,30 +12,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:log4dart_plus/log4dart_plus.dart';
+import 'package:shot_select/model/raw_file.dart';
 
-import '../../state/providers.dart';
-import '../../state/raw_file_state.dart';
-import '../../state/ui_state.dart';
+import '../file_state.dart';
 
-class LoupeView extends ConsumerWidget {
-  const LoupeView({super.key});
+class FileStateNotifier extends StateNotifier<FileState> {
+  static final Logger logger = LogManager.getLogger('RawFileStateNotifier');
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    RawFileState state = ref.watch(rawFileStateProvider);
-    UIState uiState = ref.watch(uiStateProvider);
-    return state.files.isEmpty ? Container() : InteractiveViewer(
-      //transformationController: transformationController,
-      //constrained: true,
-      //alignment: Alignment.bottomRight,
-      maxScale: 3,
-      minScale: 1,
-      //scaleEnabled: false,
-      child: Image.file(
-        state.files[uiState.current].largeThumbnailFile,
-      ),
-    );
+  FileStateNotifier() : super(const FileState(directory: '', rawFiles: []));
+
+  void selectDirectory(String directory) {
+    state = state.copyWith(directory: directory);
+  }
+
+  void setFiles(List<RawFile> rawFiles) {
+    state = state.copyWith(rawFiles: rawFiles);
+  }
+
+  Future<void> copyFiles() async {
+
+  }
+
+  Future<void> moveFiles() async {
+
   }
 }

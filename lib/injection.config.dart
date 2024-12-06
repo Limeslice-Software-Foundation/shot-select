@@ -30,9 +30,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i63.LibRawRepository>(() => _i63.LibRawRepository());
     gh.lazySingleton<_i270.RawFileRepository>(() => _i270.RawFileRepository());
+    gh.lazySingleton<_i369.AppDirRepository>(() => _i369.AppDirRepository());
     gh.lazySingleton<_i772.RawFileService>(() => _i772.RawFileService());
     gh.lazySingleton<_i681.LibRawService>(() => _i681.LibRawService());
-    gh.lazySingleton<_i369.AppDirRepository>(() => _i369.AppDirRepository());
     return this;
   }
 }

@@ -37,17 +37,22 @@ class RawFileRepository {
         }
       }
     }
+    print('Found files=$files');
     return files;
   }
 
-  Future<RawFile?> loadFile(File file, File thumbnailFile) async {
+  Future<RawFile?> loadFile(File file) async {
     RawFile? rawFile = RawFile(path: file.absolute.path);
-    int result = await rawFile.open(thumbnailFile);
+    int result = await rawFile.open();
     if(result!=0) {
       logger.debug('rawFile.open() returned non zero error code: $result');
       rawFile = null;
     }
     return rawFile;
+  }
+
+  Future<void> closeFile(RawFile rawFile) async {
+    rawFile.close();
   }
 
   Future<void> closeAll(List<RawFile> files) async {

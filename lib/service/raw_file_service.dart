@@ -29,12 +29,9 @@ class RawFileService {
     return await fileRepository.findRawFiles(dir);
   }
 
-  Future<RawFile?> loadFile(File file, String selectedDirectory) async {
+  Future<RawFile?> loadFile(File file) async {
     RawFileRepository fileRepository = getIt<RawFileRepository>();
-    AppDirRepository appDirRepository = getIt<AppDirRepository>();
-    File thumbnail = generateThumbnailFilename(file, selectedDirectory, appDirRepository.applicationDirectory());
-    await thumbnail.parent.create(recursive: true);
-    return await fileRepository.loadFile(file, thumbnail);
+    return await fileRepository.loadFile(file);
   }
 
   Future<void> closeAll(List<RawFile> files) async {

@@ -45,8 +45,12 @@ class RawFile {
   late String focalLength;
   late String dimension;
 
+  // This data is temporary an will be removed when the image is closed
+  // because it is a pointer into the heap created by the libraw library.
   late Uint8List thumbNail;
-  late File largeThumbnailFile;
+
+  // This data will persist until this object is garbage collected.
+  late Uint8List smallThumbnail;
 
   RawFile({required this.path}) {
     ptr = flutterLibRawBindings.libraw_init(0);
@@ -57,7 +61,7 @@ class RawFile {
     }
   }
 
-  Future<int> open(File thumbnailFile) async {
+  Future<int> open() async {
     int result = flutterLibRawBindings.libraw_open_file(
         ptr, path.toNativeUtf8().cast());
     if (result != 0) {
@@ -69,35 +73,26 @@ class RawFile {
         logger.debug('Failed to unpack thumbnail: $result');
       } else {
 
-        Uint8List bigThumbNail = pointerToUint8List(
+        thumbNail = pointerToUint8List(
             ptr.ref.thumbnail.thumb, ptr.ref.thumbnail.tlength);
-
 
         img.Image? decodedThumbnail;
         if(ptr.ref.thumbnail.tformat==LibRaw_thumbnail_formats.LIBRAW_THUMBNAIL_JPEG.value) {
-          decodedThumbnail = img.decodeJpg(bigThumbNail);
-          largeThumbnailFile = File('${thumbnailFile.absolute.path}.jpg');
+          decodedThumbnail = img.decodeJpg(thumbNail);
         } else if(ptr.ref.thumbnail.tformat==LibRaw_thumbnail_formats.LIBRAW_THUMBNAIL_BITMAP.value ||
             ptr.ref.thumbnail.tformat==LibRaw_thumbnail_formats.LIBRAW_THUMBNAIL_BITMAP16.value) {
-          decodedThumbnail = img.decodeBmp(bigThumbNail);
-          largeThumbnailFile = File('${thumbnailFile.absolute.path}.bmp');
+          decodedThumbnail = img.decodeBmp(thumbNail);
         } else {
           logger.debug('Unhandled thumbnail format');
           decodedThumbnail = null;
         }
-        await largeThumbnailFile.writeAsBytes(bigThumbNail);
         if(decodedThumbnail != null) {
-          var smallThumbnail = img.copyResize(decodedThumbnail, width: 300, maintainAspect: true);
-          thumbNail = img.encodeJpg(smallThumbnail, quality: 75);
+          var smallThumbnailImage = img.copyResize(decodedThumbnail, width: 320, maintainAspect: true);
+          smallThumbnail = img.encodeJpg(smallThumbnailImage, quality: 75);
         }
       }
     }
-    close();
     return result;
-  }
-
-  void _setThumbnailFile(Directory appDir) {
-
   }
 
   void _loadDataFromFile() {
